@@ -163,7 +163,7 @@
                                                                 </tr>
                                                             </thead>
                                                             <tbody id="legislatorTableBody">
-                                                                <tr dir-paginate="leg in filterList|itemsPerPage:10 | orderBy:['state_name','last_name', 'first_name']:false">
+                                                                <tr dir-paginate="leg in stateSorted|itemsPerPage:10 ">
                                                                     <td ng-if="leg.party == 'R' " style='width: 15%; '>
                                                                         <img src='http://cs-server.usc.edu:45678/hw/hw8/images/r.png' style='width: 43px; height:37px; display: block;'>
                                                                     </td>
@@ -227,7 +227,7 @@
                                                                 </tr>
                                                             </thead>
                                                             <tbody id="legislatorTableBody">
-                                                                <tr dir-paginate="leg in filterList|itemsPerPage:10 | orderBy:['state_name','last_name', 'first_name']:false | filter:{chamber:'house'} ">
+                                                                <tr dir-paginate="leg in lastNameSorted |itemsPerPage:10 | filter:{chamber:'house'} | filter:searchKeyword">
                                                                     <td ng-if="leg.party == 'R' " style='width: 15%; '>
                                                                         <img src='http://cs-server.usc.edu:45678/hw/hw8/images/r.png' style='width: 43px; height:37px; display: block;'>
                                                                     </td>
@@ -270,9 +270,9 @@
                                                                 <tr>
                                                                     <th colspan="5">Legislators By Senate</th>
                                                                     <th>
-                                                                        <div class="form-group">
+                                                                        <div class="form-group" style="inline-block;">
                                                                             <label>Search</label>
-                                                                            <input type="text" class="form-control" ng-model="searchKeyword" placeholder="Search" />
+                                                                            <input type="text" ng-model="searchKeyword" placeholder="Search" />
                                                                         </div>
                                                                     </th>
                                                                 </tr>
@@ -286,7 +286,7 @@
                                                                 </tr>
                                                             </thead>
                                                             <tbody id="legislatorTableBody">
-                                                                <tr dir-paginate="leg in filterList|itemsPerPage:10 | orderBy:['state_name','last_name', 'first_name']:false | filter:{chamber:'senate'} ">
+                                                                <tr dir-paginate="leg in lastNameSorted |itemsPerPage:10 | filter:{chamber:'senate'} | filter:searchKeyword ">
                                                                     <td ng-if="leg.party == 'R' " style='width: 15%; '>
                                                                         <img src='http://cs-server.usc.edu:45678/hw/hw8/images/r.png' style='width: 43px; height:37px; display: block;'>
                                                                     </td>
@@ -364,6 +364,7 @@
     <!--end page content wrapper-->
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
     <script src="js/dirPagination.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-filter/0.5.11/angular-filter.min.js"></script>
     <script src="js/jquery-3.1.1.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/congress.js"></script>

@@ -1,6 +1,5 @@
-var app = angular.module('congress', ['angularUtils.directives.dirPagination']);
+var app = angular.module('congress', ['angularUtils.directives.dirPagination', 'angular.filter']);
 app.controller("legDataCtrl", ['$scope', '$http', 'filterFilter', function ($scope, $http, filterFilter) {
-    $scope.legData = [];
     $http({
         method: 'GET',
         url: 'congress.php',
@@ -8,13 +7,16 @@ app.controller("legDataCtrl", ['$scope', '$http', 'filterFilter', function ($sco
             dbType: "legislators"
         }
     }).success(function (data) {
-        sortByKey(data.results, 'state_name');
         $scope.legData = data.results;
-        $scope.filterList = data.results;
+        $scope.stateSorted = data.results;
+        $scope.lastNameSorted = data.results;
+        $scope.stateSorted = $scope.orderBy($scope.stateSorted, 'state_name');
+        $scope.lastNameSorted = $scope.orderBy(data.results, 'last_name');
+        
         $scope.currentPage = 1;
         $scope.numPerPage = 10;
         $scope.maxSize = 5;
-        $scope.totalItems = $scope.filterList.length;
+        $scope.totalItems = data.results.length;
     });
     $scope.$watch('searchKeyword', function (term) {
         if(angular.isUndefined(term)) {
@@ -24,8 +26,7 @@ app.controller("legDataCtrl", ['$scope', '$http', 'filterFilter', function ($sco
         var obj = {
             $: term
         };
-
-        $scope.filterList = filterFilter($scope.legData, obj);
+        $scope.lastNameSorted = filterFilter($scope.legData, obj);
         $scope.currentPage = 1;
     });
     $scope.$watch('stateFilter', function (term) {
@@ -37,9 +38,16 @@ app.controller("legDataCtrl", ['$scope', '$http', 'filterFilter', function ($sco
             state_name: term
         };
 
-        $scope.filterList = filterFilter($scope.legData, obj);
+        $scope.stateSorted = filterFilter($scope.legData, obj);
         $scope.currentPage = 0;
     });
+    $scope.orderBy = function(array, key) {
+        var sorted = array.sort(function(a, b) {
+            var x = a[key]; var y = b[key];
+            return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+        });
+        return sorted;
+    }
 }]).filter('start', function () {
     return function (input, start) {
         if (!input || !input.length) {
@@ -72,11 +80,4 @@ function viewLegislatorDetails(legJson) {
     var legPersonalDetailsTable = "",
         legCommittessTable = "",
         legBillsTable = "";
-}
-
-function sortByKey(array, key) {
-    return array.sort(function(a, b) {
-        var x = a[key]; var y = b[key];
-        return ((x < y) ? -1 : ((x > y) ? 1 : 0));
-    });
 }
