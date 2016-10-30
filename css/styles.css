@@ -1,21 +1,41 @@
-#sunlighthome {
-    margin:auto;
-    display: inline-block;
-    vertical-align: top;
+    #sunlighthome {
+        margin: auto;
+        display: inline-block;
+        vertical-align: top;
+    }
     
-}
-#title {
-    display: inline-block;
-    vertical-align: top;
-    margin:0;
-}
-@media screen and (max-width: 768px) {
-    #topHeader {
-        display: none;
+    #title {
+        display: inline-block;
+        vertical-align: top;
+        margin: 0;
     }
-.navbar-fixed-side {
-    width:auto;
-}
-    #legislatorTableBody {
-        visibility: visible;
+    
+    @media screen and (max-width: 768px) {
+        #topHeader {
+            display: none;
+        }
+        .navbar-fixed-side {
+            width: auto;
+        }
+        #legislatorTableBody {
+            visibility: visible;
+        }
     }
+    
+    .table-bordered > thead > tr > th,
+    .table-bordered > tbody > tr > th,
+    .table-bordered > tfoot > tr > th,
+    .table-bordered > thead > tr > td,
+    .table-bordered > tbody > tr > td,
+    .table-bordered > tfoot > tr > td {
+        border: 1px solid #dddddd;
+        border-right-width: 0px;
+        border-left-width: 0px;
+    }
+.tab-content {
+    border: 1px solid #ddd;
+}
+.nav-tabs {
+    margin-bottom: 0;
+    border: 1px solid #dddddd;
+}
