@@ -1,4 +1,4 @@
-var app = angular.module('congress', ['angularUtils.directives.dirPagination', 'angular.filter']);
+var app = angular.module('congress', ['angularUtils.directives.dirPagination', 'ui.bootstrap']);
 app.controller("legDataCtrl", ['$scope', '$http', 'filterFilter', function ($scope, $http, filterFilter) {
     $http({
         method: 'GET',
@@ -37,7 +37,24 @@ app.controller("legDataCtrl", ['$scope', '$http', 'filterFilter', function ($sco
             return ((x < y) ? -1 : ((x > y) ? 1 : 0));
         });
         return sorted;
-    }
+    };
+    function getTermCompletePercentage(startDate, endDate) {
+        var start = new Date(startDate), 
+        end = new Date(endDate), 
+        today = new Date(), 
+        percentComplete = Math.round(((today - start) / (end - start)) * 100) + '%';
+        return percentComplete;
+    };
+    $scope.viewLegislatorDetails = function (legJson) {
+        var legPersonalDetailsTable = "",
+        legCommittessTable = "",
+        legBillsTable = "";
+        $scope.legDetails = legJson;
+        $scope.percTermComp = getTermCompletePercentage(legJson.term_start, legJson.term_end);
+    };
+    
+    
+    
 }]).filter('start', function () {
     return function (input, start) {
         if (!input || !input.length) {
@@ -111,6 +128,8 @@ $(document).ready(function () {
         $("#main-navbar").toggleClass("hide");
         $('#page-content').toggleClass("col-sm-10");
         $('#page-content').toggleClass("col-sm-12");
+        $('#page-content').toggleClass("col-lg-10");
+        $('#page-content').toggleClass("col-lg-12");
     });
     
     $("#myCarousel").carousel({
@@ -122,6 +141,17 @@ function viewLegislatorDetails(legJson) {
     var legPersonalDetailsTable = "",
         legCommittessTable = "",
         legBillsTable = "";
+    legPersonalDetailsTable += "table class='table table-hover' id='legPersonalTable' style='width:50%'><tbody><tr>";
+    legPersonalDetailsTable += "<td>https://theunitedstates.io/images/congress/original/"+legJson.bioguide_id +".jpg";
+    legPersonalDetailsTable += "</td><td>";
+    legPersonalDetailsTable += "<table class='table'><tbody><tr><td>";
+    legPersonalDetailsTable += "full name";
+    legPersonalDetailsTable += "</td></tr><tr><td>email</td></tr>";
+    legPersonalDetailsTable += "<tr><td>Chamber:</td></tr>";
+    legPersonalDetailsTable += "<tr><td>Party</td></tr>";
+    legPersonalDetailsTable += "</tbody></table></td>";
+    legPersonalDetailsTable += "</tr></tbody></table>";
+    ("#legPersonalDetails").html(legPersonalDetailsTable);
 }
 function billsTab() {
     if($("#billContent").hasClass("hide")) {
