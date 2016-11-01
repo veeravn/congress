@@ -1,4 +1,4 @@
-var app = angular.module('congress', ['angularUtils.directives.dirPagination', 'ui.bootstrap']);
+var app = angular.module('congress', ['angularUtils.directives.dirPagination', 'ui.bootstrap', 'angular.filter']);
 app.controller("legDataCtrl", ['$scope', '$http', 'filterFilter', function ($scope, $http, filterFilter) {
     $http({
         method: 'GET',
@@ -11,7 +11,7 @@ app.controller("legDataCtrl", ['$scope', '$http', 'filterFilter', function ($sco
         $scope.state = $scope.orderBy(data.results, 'state_name');
         $scope.house = $scope.orderBy(data.results, 'last_name');
         $scope.senate = $scope.orderBy(data.results, 'last_name');
-        
+        $scope.stateNames = $scope.orderBy(data.results, 'state_name');
         
         $scope.currentPage = 1;
         $scope.pageSize = 10;
@@ -25,7 +25,7 @@ app.controller("legDataCtrl", ['$scope', '$http', 'filterFilter', function ($sco
             
         } 
         var obj = {
-            state_name: term
+            state_name: term.state_name
         };
 
         $scope.state = filterFilter($scope.legData, obj);
@@ -42,7 +42,7 @@ app.controller("legDataCtrl", ['$scope', '$http', 'filterFilter', function ($sco
         var start = new Date(startDate), 
         end = new Date(endDate), 
         today = new Date(), 
-        percentComplete = Math.round(((today - start) / (end - start)) * 100) + '%';
+        percentComplete = Math.round(((today - start) / (end - start)) * 100);
         return percentComplete;
     };
     $scope.viewLegislatorDetails = function (legJson) {
@@ -52,7 +52,25 @@ app.controller("legDataCtrl", ['$scope', '$http', 'filterFilter', function ($sco
         $scope.legDetails = legJson;
         $scope.percTermComp = getTermCompletePercentage(legJson.term_start, legJson.term_end);
     };
-    
+    $scope.favoriteLegs = function(legJson){
+        
+        var curFavLegs = JSON.parse(localStorage.getItem("favLegs"));
+        var exists = false;
+        if(curFavLegs == null) {
+            curFavLegs = [];
+            curFavLegs.push(legJson);
+        } else {
+            angular.forEach(curFavLegs, function(value, key) {
+                if(value.committee_id === legJson.committee_id) {
+                    exists = true;  
+                }
+            });
+            if(!exists) {
+                curFavLegs.push(legJson);
+            }
+        }
+        localStorage.setItem("favLegs", JSON.stringify(curFavLegs));
+    };
     
     
 }]).filter('start', function () {
@@ -88,6 +106,25 @@ app.controller("billDataCtrl", ['$scope', '$http', 'filterFilter', function ($sc
         });
         return sorted;
     }
+    $scope.favoriteBill = function(billJson){
+        
+        var curFavBills = JSON.parse(localStorage.getItem("favBills"));
+        var exists = false;
+        if(curFavBills == null) {
+            curFavBills = [];
+            curFavBills.push(billJson);
+        } else {
+            angular.forEach(curFavBills, function(value, key) {
+                if(value.committee_id === billJson.committee_id) {
+                    exists = true;  
+                }
+            });
+            if(!exists) {
+                curFavBills.push(billJson);
+            }
+        }
+        localStorage.setItem("favBills", JSON.stringify(curFavBills));
+    };
 }]);
 
 app.controller("comDataCtrl", ['$scope', '$http', 'filterFilter', function ($scope, $http, filterFilter) {    
@@ -114,6 +151,26 @@ app.controller("comDataCtrl", ['$scope', '$http', 'filterFilter', function ($sco
         });
         return sorted;
     }
+    $scope.favoriteCommittee = function(comJson){
+        
+        var curFavComs = JSON.parse(localStorage.getItem("favComs"));
+        var exists = false;
+        if(curFavComs == null) {
+            curFavComs = [];
+            curFavComs.push(comJson);
+        } else {
+            
+            angular.forEach(curFavComs, function(value, key) {
+                if(value.committee_id === comJson.committee_id) {
+                    exists = true;  
+                }
+            });
+            if(!exists) {
+                curFavComs.push(comJson);
+            }
+        }
+        localStorage.setItem("favComs", JSON.stringify(curFavComs));
+    };
 }]);
 
 app.filter('capitalize', function () {
@@ -121,6 +178,7 @@ app.filter('capitalize', function () {
         return (!!input) ? input.charAt(0).toUpperCase() + input.substr(1) : '';
     }
 });
+
 $(document).ready(function () {
    /*Menu-toggle*/
     $("#menu-toggle").click(function(e) {
@@ -136,23 +194,6 @@ $(document).ready(function () {
         interval: false
     });
 });
-
-function viewLegislatorDetails(legJson) {
-    var legPersonalDetailsTable = "",
-        legCommittessTable = "",
-        legBillsTable = "";
-    legPersonalDetailsTable += "table class='table table-hover' id='legPersonalTable' style='width:50%'><tbody><tr>";
-    legPersonalDetailsTable += "<td>https://theunitedstates.io/images/congress/original/"+legJson.bioguide_id +".jpg";
-    legPersonalDetailsTable += "</td><td>";
-    legPersonalDetailsTable += "<table class='table'><tbody><tr><td>";
-    legPersonalDetailsTable += "full name";
-    legPersonalDetailsTable += "</td></tr><tr><td>email</td></tr>";
-    legPersonalDetailsTable += "<tr><td>Chamber:</td></tr>";
-    legPersonalDetailsTable += "<tr><td>Party</td></tr>";
-    legPersonalDetailsTable += "</tbody></table></td>";
-    legPersonalDetailsTable += "</tr></tbody></table>";
-    ("#legPersonalDetails").html(legPersonalDetailsTable);
-}
 function billsTab() {
     if($("#billContent").hasClass("hide")) {
         $("#billContent").toggleClass("hide");

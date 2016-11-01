@@ -34,11 +34,11 @@
                 </nav>
                 <br>
                 <br>
-                <div class="col-sm-2 col-lg-2">
+                <div class="col-sm-2 col-lg-2 col-xs-3">
                     <nav id="main-navbar" class="navbar navbar-inverse navbar-fixed-side ">
                         <div class="container">
                             <div class="navbar-header">
-                                <button class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse">
+                                <button class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse" style="float:right;">
                                     <span class="sr-only">Toggle navigation</span>
                                     <span class="icon-bar"></span>
                                     <span class="icon-bar"></span>
@@ -74,7 +74,7 @@
                 </div>
                 <!-- Page content -->
                 <div class="container-fluid">
-                    <div class="col-sm-10 col-lg-10" id="page-content">
+                    <div class="col-sm-10 col-lg-10 col-xs-9" id="page-content">
                         <div id="legContent" class="" ng-controller="legDataCtrl">
                             <div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval=false>
                                 <div class="carousel-inner">
@@ -85,70 +85,19 @@
                                             <div class="panel-body">
                                                 <ul class="nav nav-tabs">
                                                     <li class="active"><a href="#1" data-toggle="tab" id="stateSearch">By State</a></li>
-                                                    <li><a href="#2" data-toggle="tab" id="senateSearch">House</a></li>
-                                                    <li><a href="#3" data-toggle="tab" id="houseSearch">Senate</a></li>
+                                                    <li><a href="#houseLeg" data-toggle="tab" id="senateSearch">House</a></li>
+                                                    <li><a href="#senateLeg" data-toggle="tab" id="houseSearch">Senate</a></li>
                                                 </ul>
                                                 <div class="tab-content ">
                                                     <div class="tab-pane active" id="1">
                                                         <div class="panel-body">
-                                                            <table class="table table-hover table-bordered" id="legislatorTable" style="width:100%">
+                                                            <table class="table table-hover table-bordered" id="legislatorTable">
                                                                 <thead class="thead-inverse">
                                                                     <tr style="background-color:#f2f2f2;">
                                                                         <th colspan="5" style="vertical-align:middle">Legislators By State</th>
                                                                         <th>
-                                                                            <select id="stateFilter" class="form-control" ng-model="stateFilter" data-col="0">
+                                                                            <select id="stateFilter" class="form-control" ng-model="stateFilter" data-col="0" ng-options="state.state_name for state in stateNames | unique: 'state_name' track by state.state_name">
                                                                                 <option value="">All States</option>
-                                                                                <option value="Alabama">Alabama</option>
-                                                                                <option value="Alaska">Alaska</option>
-                                                                                <option value="Arizona">Arizona</option>
-                                                                                <option value="Arkansas">Arkansas</option>
-                                                                                <option value="California">California</option>
-                                                                                <option value="Colorado">Colorado</option>
-                                                                                <option value="Connecticut">Connecticut</option>
-                                                                                <option value="Delaware">Delaware</option>
-                                                                                <option value="District Of Columbia">District Of Columbia</option>
-                                                                                <option value="Florida">Florida</option>
-                                                                                <option value="Georgia">Georgia</option>
-                                                                                <option value="Hawaii">Hawaii</option>
-                                                                                <option value="Idaho">Idaho</option>
-                                                                                <option value="Illinois">Illinois</option>
-                                                                                <option value="Indiana">Indiana</option>
-                                                                                <option value="Iowa">Iowa</option>
-                                                                                <option value="Kansas">Kansas</option>
-                                                                                <option value="Kentucky">Kentucky</option>
-                                                                                <option value="Louisiana">Louisiana</option>
-                                                                                <option value="Maine">Maine</option>
-                                                                                <option value="Maryland">Maryland</option>
-                                                                                <option value="Massachusetts">Massachusetts</option>
-                                                                                <option value="Michigan">Michigan</option>
-                                                                                <option value="Minnesota">Minnesota</option>
-                                                                                <option value="Mississippi">Mississippi</option>
-                                                                                <option value="Missouri">Missouri</option>
-                                                                                <option value="Montana">Montana</option>
-                                                                                <option value="Nebraska">Nebraska</option>
-                                                                                <option value="Nevada">Nevada</option>
-                                                                                <option value="New Hampshire">New Hampshire</option>
-                                                                                <option value="New Jersey">New Jersey</option>
-                                                                                <option value="New Mexico">New Mexico</option>
-                                                                                <option value="New York">New York</option>
-                                                                                <option value="North Carolina">North Carolina</option>
-                                                                                <option value="North Dakota">North Dakota</option>
-                                                                                <option value="Ohio">Ohio</option>
-                                                                                <option value="Oklahoma">Oklahoma</option>
-                                                                                <option value="Oregon">Oregon</option>
-                                                                                <option value="Pennsylvania">Pennsylvania</option>
-                                                                                <option value="Rhode Island">Rhode Island</option>
-                                                                                <option value="South Carolina">South Carolina</option>
-                                                                                <option value="South Dakota">South Dakota</option>
-                                                                                <option value="Tennessee">Tennessee</option>
-                                                                                <option value="Texas">Texas</option>
-                                                                                <option value="Utah">Utah</option>
-                                                                                <option value="Vermont">Vermont</option>
-                                                                                <option value="Virginia">Virginia</option>
-                                                                                <option value="Washington">Washington</option>
-                                                                                <option value="West Virginia">West Virginia</option>
-                                                                                <option value="Wisconsin">Wisconsin</option>
-                                                                                <option value="Wyoming">Wyoming</option>
                                                                             </select>
                                                                         </th>
                                                                     </tr>
@@ -162,7 +111,7 @@
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody id="legislatorTableBody">
-                                                                    <tr dir-paginate="leg in state |itemsPerPage:pageSize" current-page="currentPage" pagination-id='state'>
+                                                                    <tr dir-paginate="leg in state | filter:stateFilter |itemsPerPage:pageSize" current-page="currentPage" pagination-id='state'>
                                                                         <td ng-if="leg.party == 'R' " style='width: 15%; '>
                                                                             <img src='http://cs-server.usc.edu:45678/hw/hw8/images/r.png' style='width: 43px; height:37px; display: block;'>
                                                                         </td>
@@ -170,23 +119,23 @@
                                                                             <img src='http://cs-server.usc.edu:45678/hw/hw8/images/d.png' style='width: 43px; height:37px; display: block;'>
                                                                         </td>
                                                                         <td ng-if="leg.party == 'I' " style='width: 15%; '></td>
-                                                                        <td style='width: 25%; '>
+                                                                        <td style='width: 20%; ' data-order="asc">
                                                                             {{leg.last_name}}, {{leg.first_name}}
                                                                         </td>
-                                                                        <td ng-if="leg.chamber == 'house' " style='width: 25%; '>
+                                                                        <td ng-if="leg.chamber == 'house' " style='width: 20%; '>
                                                                             <img src='http://cs-server.usc.edu:45678/hw/hw8/images/h.png' style='width: 43px; height:37px; display: inline-block;'>&nbsp&nbsp{{leg.chamber | capitalize}}
                                                                         </td>
-                                                                        <td ng-if="leg.chamber == 'senate' " style='width: 25%; '>
+                                                                        <td ng-if="leg.chamber == 'senate' " style='width: 20%; '>
                                                                             <img src='http://cs-server.usc.edu:45678/hw/hw8/images/s.svg' style='width: 43px; height:37px; display: inline-block;'>&nbsp&nbsp{{leg.chamber | capitalize}}
                                                                         </td>
 
-                                                                        <td ng-if="leg.district == null" style='width: 25%; '>
+                                                                        <td ng-if="leg.district == null" style='width: 15%; '>
                                                                             N.A.
                                                                         </td>
-                                                                        <td ng-if="leg.district != null" style='width: 25%; '>
+                                                                        <td ng-if="leg.district != null" style='width: 15%; '>
                                                                             District {{leg.district}}
                                                                         </td>
-                                                                        <td data-order="asc">
+                                                                        <td data-order="asc" style='width: 15%; '>
                                                                             {{leg.state_name}}
                                                                         </td>
                                                                         <td style='text-align: right;'>
@@ -203,7 +152,7 @@
                                                         <!--end panel body-->
                                                     </div>
                                                     <!-- end tab pane 1 -->
-                                                    <div class="tab-pane" id="2">
+                                                    <div class="tab-pane" id="houseLeg">
                                                         <div class="panel-body">
                                                             <table class="table table-hover table-bordered" id="houseTable" style="width:100%">
                                                                 <thead class="thead-inverse">
@@ -225,7 +174,7 @@
                                                                         <th></th>
                                                                     </tr>
                                                                 </thead>
-                                                                <tbody id="legislatorTableBody">
+                                                                <tbody id="houseLegTableBody">
                                                                     <tr dir-paginate="leg in house | filter:{chamber:'house'} | filter:searchKeyword |itemsPerPage: pageSize" current-page="currentPage" pagination-id='house'>
                                                                         <td ng-if="leg.party == 'R' " style='width: 15%; '>
                                                                             <img src='http://cs-server.usc.edu:45678/hw/hw8/images/r.png' style='width: 43px; height:37px; display: block;'>
@@ -234,23 +183,23 @@
                                                                             <img src='http://cs-server.usc.edu:45678/hw/hw8/images/d.png' style='width: 43px; height:37px; display: block;'>
                                                                         </td>
                                                                         <td ng-if="leg.party == 'I' " style='width: 15%; '></td>
-                                                                        <td style='width: 25%; '>
+                                                                        <td style='width: 20%; ' data-order="asc">
                                                                             {{leg.last_name}}, {{leg.first_name}}
                                                                         </td>
-                                                                        <td style='width: 25%; '>
+                                                                        <td style='width: 20%; '>
                                                                             <img src='http://cs-server.usc.edu:45678/hw/hw8/images/h.png' style='width: 43px; height:37px; display: inline-block;'>&nbsp&nbsp{{leg.chamber | capitalize}}
                                                                         </td>
-                                                                        <td ng-if="leg.district == null" style='width: 25%; '>
+                                                                        <td ng-if="leg.district == null" style='width: 15%; '>
                                                                             N.A.
                                                                         </td>
-                                                                        <td ng-if="leg.district != null" style='width: 25%; '>
+                                                                        <td ng-if="leg.district != null" style='width: 15%; '>
                                                                             District {{leg.district}}
                                                                         </td>
-                                                                        <td data-order="asc">
+                                                                        <td style='width: 15%; '>
                                                                             {{leg.state_name}}
                                                                         </td>
                                                                         <td style='text-align: right;'>
-                                                                            <button class="btn btn-primary" data-target='#myCarousel' data-slide-to='1' href='#' onclick='viewLegislatorDetails(leg);'>View Details</button>
+                                                                            <button class="btn btn-primary" data-target='#myCarousel' data-slide-to='1' href='#' ng-click="viewLegislatorDetails(leg)">View Details</button>
                                                                         </td>
                                                                     </tr>
                                                                 </tbody>
@@ -262,7 +211,7 @@
                                                         </div>
                                                     </div>
                                                     <!--end tab pane 2 -->
-                                                    <div class="tab-pane" id="3">
+                                                    <div class="tab-pane" id="senateLeg">
                                                         <div class="panel-body">
                                                             <table class="table table-hover table-bordered" id="legislatorTable" style="width:100%">
                                                                 <thead class="thead-inverse">
@@ -283,8 +232,8 @@
                                                                         <th></th>
                                                                     </tr>
                                                                 </thead>
-                                                                <tbody id="legislatorTableBody">
-                                                                    <tr dir-paginate="leg in senate | filter:{chamber: 'senate'} | filter:searchKeyword | itemsPerPage: pageSize" current-page="currentPage" pagination-id='senate'>
+                                                                <tbody id="senateLegTableBody">
+                                                                    <tr dir-paginate="leg in senate | filter:{chamber: 'senate'} | filter:searchSenate | itemsPerPage: pageSize" current-page="currentPage" pagination-id='senate'>
                                                                         <td ng-if="leg.party == 'R' " style='width: 15%; '>
                                                                             <img src='http://cs-server.usc.edu:45678/hw/hw8/images/r.png' style='width: 43px; height:37px; display: block;'>
                                                                         </td>
@@ -293,23 +242,23 @@
                                                                         </td>
                                                                         <td ng-if="leg.party == 'I' " style='width: 15%; '></td>
 
-                                                                        <td style='width: 25%; '>
+                                                                        <td style='width: 20%; ' data-order="asc">
                                                                             {{leg.last_name}}, {{leg.first_name}}
                                                                         </td>
-                                                                        <td style='width: 25%; '>
+                                                                        <td style='width: 20%; '>
                                                                             <img src='http://cs-server.usc.edu:45678/hw/hw8/images/h.png' style='width: 43px; height:37px; display: inline-block;'>&nbsp&nbsp{{leg.chamber | capitalize}}
                                                                         </td>
-                                                                        <td ng-if="leg.district == null" style='width: 25%; '>
+                                                                        <td ng-if="leg.district == null" style='width: 15%; '>
                                                                             N.A.
                                                                         </td>
-                                                                        <td ng-if="leg.district != null" style='width: 25%; '>
+                                                                        <td ng-if="leg.district != null" style='width: 15%; '>
                                                                             District {{leg.district}}
                                                                         </td>
-                                                                        <td data-order="asc">
+                                                                        <td style='width: 15%; '>
                                                                             {{leg.state_name}}
                                                                         </td>
                                                                         <td style='text-align: right;'>
-                                                                            <button class="btn btn-primary" data-target='#myCarousel' data-slide-to='1' href='#' >View Details</button>
+                                                                            <button class="btn btn-primary" data-target='#myCarousel' data-slide-to='1' href='#' ng-click="viewLegislatorDetails(leg)" >View Details</button>
                                                                         </td>
                                                                     </tr>
                                                                 </tbody>
@@ -324,7 +273,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <!--end carousel item 0-->
+                                    <!--end carousel item 1-->
                                     <div class="item" id="legislatorDetails">
                                         <h1>Legislators</h1>
                                         <hr>
@@ -337,11 +286,11 @@
                                                 <div id="legPersonalDetails">
                                                     <table class='table' id='legPersonalTable' style='width:50%'>
                                                         <tbody>
-                                                            <tr>
-                                                                <td>
-                                                                    <img ng-src="https://theunitedstates.io/images/congress/original/{{legDetails.bioguide_id}}.jpg" style="width:125px; height:150px;"/>
+                                                            <tr style='width:100%'>
+                                                                <td class="text-center" style='width:50%'>
+                                                                    <img ng-src="https://theunitedstates.io/images/congress/original/{{legDetails.bioguide_id}}.jpg" style="width:200px; height:225px;"/>
                                                                 </td>
-                                                                <td>
+                                                                <td style='width:50%'>
                                                                     <table class='table'>
                                                                         <tbody>
                                                                             <tr>
@@ -350,8 +299,11 @@
                                                                                 </td>
                                                                             </tr>
                                                                             <tr>
-                                                                                <td>
-                                                                                    <a ng-href="{{legDetails.website}}" target="_blank">{{legDetails.website}}</a>
+                                                                                <td ng-if="legDetails.oc_email != null">
+                                                                                    <a ng-href="mailto:{{legDetails.oc_email}}" target="_blank">{{legDetails.oc_email}}</a>
+                                                                                </td>
+                                                                                <td ng-if="legDetails.oc_email == null">
+                                                                                    N.A.
                                                                                 </td>
                                                                             </tr>
                                                                             <tr>
@@ -377,38 +329,48 @@
                                                                 </td>
                                                             </tr>
                                                             <tr>
-                                                                <td style="width:30%">Start Term</td>
-                                                                <td style="width:70%">{{legDetails.term_start | date:'mediumDate'}}</td>
+                                                                <td style="width:10%;">Start Term</td>
+                                                                <td style="width:90%;">{{legDetails.term_start | date:'mediumDate'}}</td>
                                                             </tr>
                                                             <tr>
-                                                                <td style="width:30%">End Term</td>
-                                                                <td style="width:70%">{{legDetails.term_end | date:'mediumDate'}}</td>
+                                                                <td style="width:10%;">End Term</td>
+                                                                <td style="width:90%;">{{legDetails.term_end | date:'mediumDate'}}</td>
                                                             </tr>
                                                             <tr>
-                                                                <td style="width:30%">Term</td>
-                                                                <td style="width:70%"><uib-progressbar animate="false" value="dynamic" type="success"><b>{{percTermComp}}</b></uib-progressbar></td>
+                                                                <td style="width:10%;">Term</td>
+                                                                <td style="width:90%;"><uib-progressbar animate="false" value="percTermComp" type="success"><b>{{percTermComp}}%</b></uib-progressbar></td>
                                                             </tr>
                                                             <tr>
-                                                                <td style="width:30%">Offile</td>
-                                                                <td style="width:70%">{{legDetails.office}}</td>
+                                                                <td style="width:10%;">Offile</td>
+                                                                <td style="width:90%;">{{legDetails.office}}</td>
                                                             </tr>
                                                             <tr>
-                                                                <td style="width:30%">State</td>
-                                                                <td style="width:70%">{{legDetails.state_name}}</td>
+                                                                <td style="width:10%;">State</td>
+                                                                <td style="width:90%;">{{legDetails.state_name}}</td>
                                                             </tr>
                                                             <tr>
-                                                                <td style="width:30%">Fax</td>
-                                                                <td style="width:70%">
+                                                                <td style="width:10%;">Fax</td>
+                                                                <td style="width:90%;">
                                                                     <a ng-href="{{legDetails.phone}}" data-rel="external">{{legDetails.fax}}</a>
                                                                 </td>
                                                             </tr>
                                                             <tr>
-                                                                <td style="width:30%">Birthday</td>
-                                                                <td style="width:70%">{{legDetails.birthday | date:'mediumDate'}}</td>
+                                                                <td style="width:10%;">Birthday</td>
+                                                                <td style="width:90%;">{{legDetails.birthday | date:'mediumDate'}}</td>
                                                             </tr>
                                                             <tr>
-                                                                <td style="width:30%">Social Links</td>
-                                                                <td style="width:70%"></td>
+                                                                <td style="width:10%;">Social Links</td>
+                                                                <td style="width:90%;">
+                                                                   <a ng-href="{{(legDetails.facebook_id != null) ? 'www.twitter.com/{{legDetails.twitter_id' : undefined}}" target="_blank">
+                                                                        <img ng-src="http://cs-server.usc.edu:45678/hw/hw8/images/t.png" style='width: 43px; height:37px; display: inline-block;'/>
+                                                                    </a>
+                                                                    <a ng-href="{{(legDetails.facebook_id != null) ? 'www.facebook.com/legDetails.facebook_id' : undefined}}" target="_blank">
+                                                                        <img ng-src="http://cs-server.usc.edu:45678/hw/hw8/images/f.png" style='width: 43px; height:37px; display: inline-block;'/>
+                                                                    </a>
+                                                                    <a ng-href="{{(legDetails.webite != null) ? 'legDetails.webite' : undefined}}" target="_blank">
+                                                                        <img ng-src="http://cs-server.usc.edu:45678/hw/hw8/images/w.png" style='width: 43px; height:37px; display: inline-block;'/>
+                                                                    </a>
+                                                                </td>
                                                             </tr>
                                                         </tbody>
                                                     </table>
@@ -581,7 +543,11 @@
                                                     </thead>
                                                     <tbody>
                                                         <tr dir-paginate="com in coms | filter:{chamber: 'house'} | filter:houseComSearch | itemsPerPage: pageSize" current-page="currentPage" pagination-id='houseCommittees'>
-                                                            <td>Favorite Icon</td>
+                                                            <td>
+                                                                <a ng-attr-id="{{com.committee_id}}" href="#" ng-click="favoriteCommittee(com)">
+                                                                    <i class="fa fa-star-o fa-3x" aria-hidden="true" id="favComIcon"></i>
+                                                                </a>
+                                                            </td>
                                                             <td style='width: 15%; '>
                                                                 <img src='http://cs-server.usc.edu:45678/hw/hw8/images/h.png' style='width: 43px; height:37px; display: inline-block;'>&nbsp&nbsp{{com.chamber | capitalize}}
                                                             </td>
@@ -707,9 +673,9 @@
                                         <div class="panel">
                                             <div class="panel-body" ng-controller="billDataCtrl">
                                                 <ul class="nav nav-tabs">
-                                                    <li class="active"><a href="#1" data-toggle="tab" id="favLegislators">Legislators</a></li>
-                                                    <li><a href="#2" data-toggle="tab" id="favBills">Bills</a></li>
-                                                    <li><a href="#3" data-toggle="tab" id="favCommittees">Committees</a></li>
+                                                    <li class="active"><a href="#favLegs" data-toggle="tab" id="favLegislators">Legislators</a></li>
+                                                    <li><a href="#favBills" data-toggle="tab" id="favBills">Bills</a></li>
+                                                    <li><a href="#favComs" data-toggle="tab" id="favCommittees">Committees</a></li>
                                                 </ul>
                                                 <div class="tab-content ">
                                                     <div class="tab-pane active" id="1">
@@ -742,5 +708,6 @@
     <script src="js/jquery-3.1.1.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-2.2.0.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-filter/0.5.11/angular-filter.min.js"></script>
     <script src="js/congress.js"></script>
 </body>

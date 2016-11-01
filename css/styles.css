@@ -32,10 +32,16 @@
         border-right-width: 0px;
         border-left-width: 0px;
     }
-.tab-content {
-    border: 1px solid #ddd;
-}
-.nav-tabs {
-    margin-bottom: 0;
-    border: 1px solid #dddddd;
-}
+    
+    .tab-content {
+        border: 1px solid #ddd;
+    }
+    
+    .nav-tabs {
+        margin-bottom: 0;
+        border: 1px solid #dddddd;
+    }
+    
+    .fav-color {
+        color: yellow;
+    }
