@@ -125,6 +125,10 @@ app.controller("billDataCtrl", ['$scope', '$http', 'filterFilter', function ($sc
         }
         localStorage.setItem("favBills", JSON.stringify(curFavBills));
     };
+    $scope.viewBillDetails = function (billJson) {
+        $scope.billDetails = billJson;
+    };
+    
 }]);
 
 app.controller("comDataCtrl", ['$scope', '$http', 'filterFilter', function ($scope, $http, filterFilter) {    
@@ -188,6 +192,8 @@ $(document).ready(function () {
         $('#page-content').toggleClass("col-sm-12");
         $('#page-content').toggleClass("col-lg-10");
         $('#page-content').toggleClass("col-lg-12");
+        $('#page-content').toggleClass("col-xs-3");
+        $('#page-content').toggleClass("col-xs-9");
     });
     
     $("#myCarousel").carousel({
