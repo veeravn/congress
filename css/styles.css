@@ -3,23 +3,59 @@
         display: inline-block;
         vertical-align: top;
     }
-    
+
     #title {
         display: inline-block;
         vertical-align: top;
         margin: 0;
     }
-    
+    #sidebar, #page-content {
+        padding-top: 50px;
+    }
+    #favBillIcon, #favLegIcon {
+        padding:5px 10px 5px 10px;
+        border: 1px solid grey; 
+        vertical-align:bottom;
+    }
     @media screen and (max-width: 768px) {
-        #topHeader {
+        #menu-toggle {
             display: none;
         }
+        #topHeader {
+            border:0;
+        }
         .navbar-fixed-side {
-            width: auto;
+            width: 100%;
         }
         #legislatorTableBody {
             visibility: visible;
         }
+        #sunlighthome {
+            margin: auto;
+            display: inline-block;
+            vertical-align: top;
+        }
+
+        #title {
+            display: inline-block;
+            vertical-align: top;
+            margin: 0;
+        }
+        #sidebar {
+            padding-top: 54px;
+            padding-right:0;
+            width: 100%;
+        }
+        #page-content {
+            padding-top: 0px;
+        }
+        #main-navbar {
+            margin-right:0;
+        }
+        .navbar-header {
+            padding-right: 0;
+        }
+       
     }
     
     .table-bordered > thead > tr > th,

@@ -1,5 +1,12 @@
 var app = angular.module('congress', ['angularUtils.directives.dirPagination', 'ui.bootstrap', 'angular.filter']);
-app.controller("legDataCtrl", ['$scope', '$http', 'filterFilter', function ($scope, $http, filterFilter) {
+app.run(function($rootScope) {
+    $rootScope.favoriteLegislators = JSON.parse(localStorage.getItem("favLegs"));
+    $rootScope.favBill = JSON.parse(localStorage.getItem("favBills"));
+    $rootScope.favoriteCommittees = JSON.parse(localStorage.getItem("favComs"));
+});
+
+app.controller("legDataCtrl", ['$scope', '$http', 'filterFilter', '$rootScope', function ($scope, $http, filterFilter, $rootScope) {
+
     $http({
         method: 'GET',
         url: 'congress.php',
@@ -8,19 +15,18 @@ app.controller("legDataCtrl", ['$scope', '$http', 'filterFilter', function ($sco
         }
     }).success(function (data) {
         $scope.legData = data.results;
-        $scope.state = $scope.orderBy(data.results, 'state_name');
-        $scope.house = $scope.orderBy(data.results, 'last_name');
-        $scope.senate = $scope.orderBy(data.results, 'last_name');
-        $scope.stateNames = $scope.orderBy(data.results, 'state_name');
+        $scope.state = data.results;
+        $scope.house = data.results;
+        $scope.senate = data.results;
+        $scope.stateNames = data.results;
         
         $scope.currentPage = 1;
         $scope.pageSize = 10;
         $scope.maxSize = 5;
         $scope.totalItems = data.results.length;
     });
-    
-    $scope.$watch('stateFilter', function (term) {
-        if(angular.isUndefined(term)) {
+    $scope.filterState = function (term) {
+        if(angular.isUndefined(term) || term == null) {
             term = "";
             
         } 
@@ -29,8 +35,8 @@ app.controller("legDataCtrl", ['$scope', '$http', 'filterFilter', function ($sco
         };
 
         $scope.state = filterFilter($scope.legData, obj);
-        $scope.currentPage = 0;
-    });
+    };
+    
     $scope.orderBy = function(array, key) {
         var sorted = array.sort(function(a, b) {
             var x = a[key]; var y = b[key];
@@ -38,19 +44,9 @@ app.controller("legDataCtrl", ['$scope', '$http', 'filterFilter', function ($sco
         });
         return sorted;
     };
-    function getTermCompletePercentage(startDate, endDate) {
-        var start = new Date(startDate), 
-        end = new Date(endDate), 
-        today = new Date(), 
-        percentComplete = Math.round(((today - start) / (end - start)) * 100);
-        return percentComplete;
-    };
+    
     $scope.viewLegislatorDetails = function (legJson) {
-        var legPersonalDetailsTable = "",
-        legCommittessTable = "",
-        legBillsTable = "";
-        $scope.legDetails = legJson;
-        $scope.percTermComp = getTermCompletePercentage(legJson.term_start, legJson.term_end);
+        viewLegDetails(legJson, $scope, $http)
     };
     $scope.favoriteLegs = function(legJson){
         
@@ -61,7 +57,7 @@ app.controller("legDataCtrl", ['$scope', '$http', 'filterFilter', function ($sco
             curFavLegs.push(legJson);
         } else {
             angular.forEach(curFavLegs, function(value, key) {
-                if(value.committee_id === legJson.committee_id) {
+                if(value.bioguide_id == legJson.bioguide_id) {
                     exists = true;  
                 }
             });
@@ -70,6 +66,7 @@ app.controller("legDataCtrl", ['$scope', '$http', 'filterFilter', function ($sco
             }
         }
         localStorage.setItem("favLegs", JSON.stringify(curFavLegs));
+        $rootScope.favoriteLegislators = JSON.parse(localStorage.getItem("favLegs"));
     };
     
     
@@ -82,30 +79,34 @@ app.controller("legDataCtrl", ['$scope', '$http', 'filterFilter', function ($sco
         return input.slice(start);
     };
 });
-app.controller("billDataCtrl", ['$scope', '$http', 'filterFilter', function ($scope, $http, filterFilter) {    
+app.controller("billDataCtrl", ['$scope', '$http', 'filterFilter', '$sce', '$rootScope', function ($scope, $http, filterFilter, $sce, $rootScope) { 
+    $scope.currentPage = 1;
+    $scope.pageSize = 10;
+    $scope.maxSize = 5;
+        
     $http({
         method: 'GET',
         url: 'congress.php',
         params: {
-            dbType: "bills"
+            dbType: "bills",
+            activeStatus: "true"
         }
     }).success(function (data) {
-        $scope.billData = data.results;
-        $scope.bills = $scope.orderBy(data.results, 'bill_id');
-        
-        
-        $scope.currentPage = 1;
-        $scope.pageSize = 10;
-        $scope.maxSize = 5;
-        $scope.totalItems = data.results.length;
+        $scope.activeBills = data.results;
+        $scope.totalItems += data.results.length;
     });
-    $scope.orderBy = function(array, key) {
-        var sorted = array.sort(function(a, b) {
-            var x = a[key]; var y = b[key];
-            return ((x < y) ? -1 : ((x > y) ? 1 : 0));
-        });
-        return sorted;
-    }
+    $http({
+        method: 'GET',
+        url: 'congress.php',
+        params: {
+            dbType: "bills",
+            activeStatus: "false"
+        }
+    }).success(function (data) {
+        $scope.newBills = data.results;
+        $scope.totalItems += data.results.length;
+    });
+    
     $scope.favoriteBill = function(billJson){
         
         var curFavBills = JSON.parse(localStorage.getItem("favBills"));
@@ -115,7 +116,7 @@ app.controller("billDataCtrl", ['$scope', '$http', 'filterFilter', function ($sc
             curFavBills.push(billJson);
         } else {
             angular.forEach(curFavBills, function(value, key) {
-                if(value.committee_id === billJson.committee_id) {
+                if(value.bill_id == billJson.bill_id) {
                     exists = true;  
                 }
             });
@@ -124,14 +125,16 @@ app.controller("billDataCtrl", ['$scope', '$http', 'filterFilter', function ($sc
             }
         }
         localStorage.setItem("favBills", JSON.stringify(curFavBills));
+        $rootScope.favBill = JSON.parse(localStorage.getItem("favBills"));
     };
     $scope.viewBillDetails = function (billJson) {
         $scope.billDetails = billJson;
+        $scope.pdf = $sce.trustAsResourceUrl(billJson.last_version.urls.pdf);
     };
     
 }]);
 
-app.controller("comDataCtrl", ['$scope', '$http', 'filterFilter', function ($scope, $http, filterFilter) {    
+app.controller("comDataCtrl", ['$scope', '$http', 'filterFilter', '$rootScope', function ($scope, $http, filterFilter, $rootScope) {    
     $http({
         method: 'GET',
         url: 'congress.php',
@@ -165,7 +168,7 @@ app.controller("comDataCtrl", ['$scope', '$http', 'filterFilter', function ($sco
         } else {
             
             angular.forEach(curFavComs, function(value, key) {
-                if(value.committee_id === comJson.committee_id) {
+                if(value.committee_id == comJson.committee_id) {
                     exists = true;  
                 }
             });
@@ -174,19 +177,98 @@ app.controller("comDataCtrl", ['$scope', '$http', 'filterFilter', function ($sco
             }
         }
         localStorage.setItem("favComs", JSON.stringify(curFavComs));
+        $rootScope.favoriteCommittees = JSON.parse(localStorage.getItem("favComs"));
     };
 }]);
-
+app.controller("favDataCtrl", ['$scope', 'filterFilter', '$rootScope', '$http', '$sce', function ($scope, filterFilter, $rootScope, $http, $sce) {    
+  
+    $scope.currentPage = 1;
+    $scope.pageSize = 10;
+    $scope.maxSize = 5;
+    $scope.favoriteBills = $rootScope.favBill;
+    $scope.favoriteComs = $rootScope.favoriteCommittees;
+    $scope.favoriteLegs = $rootScope.favoriteLegislators;
+    
+    $scope.$watch("favoriteLegislators", function() {
+        $scope.favoriteLegs = $rootScope.favoriteLegislators;
+    });
+    $scope.$watch("favBill", function() {
+        $scope.favoriteBills = $rootScope.favBill;
+    });
+    $scope.$watch("favoriteCommittees", function() {
+        $scope.favoriteComs = $rootScope.favoriteCommittees;
+    });
+    $scope.removeFavorite = function(dbType, item) {
+        var index = 0;
+        if('Legislators' == dbType) {
+            index =$scope.favoriteLegs.indexOf(item)
+            $scope.favoriteLegs.splice(index,1);  
+            localStorage.setItem("favLegs", JSON.stringify($scope.favoriteLegs));
+        } else if('Bills' == dbType) {
+            index=$scope.favoriteBills.indexOf(item)
+            $scope.favoriteBills.splice(index,1); 
+            localStorage.setItem("favBills", JSON.stringify($scope.favoriteBills));
+        } else if('Committees' == dbType) {
+            index=$scope.favoriteComs.indexOf(item)
+            $scope.favoriteComs.splice(index,1);  
+            localStorage.setItem("favComs", JSON.stringify($scope.favoriteComs));
+        }
+    };
+    $scope.viewBillDetails = function (billJson) {
+        $scope.billDetails = billJson;
+        $scope.pdf = $sce.trustAsResourceUrl(billJson.last_version.urls.pdf);
+    };
+    $scope.viewLegislatorDetails = function (legJson) {
+        viewLegDetails(legJson, $scope, $http)
+    };
+    
+}]);
 app.filter('capitalize', function () {
     return function (input) {
         return (!!input) ? input.charAt(0).toUpperCase() + input.substr(1) : '';
     }
 });
+function getTermCompletePercentage(startDate, endDate) {
+    var start = new Date(startDate), 
+    end = new Date(endDate), 
+    today = new Date(), 
+    percentComplete = Math.round(((today - start) / (end - start)) * 100);
+    return percentComplete;
+}
+function viewLegDetails (legJson, $scope, $http) {
 
+    $scope.legDetails = legJson;
+    $scope.percTermComp = getTermCompletePercentage(legJson.term_start, legJson.term_end);
+    $http({
+    method: 'GET',
+    url: 'congress.php',
+    params: {
+        dbType: "bills",
+        sponsor_id: legJson.bioguide_id
+    }
+    }).success(function (data) {
+        $scope.legBills = data.results;
+    });
+    $http({
+    method: 'GET',
+    url: 'congress.php',
+    params: {
+        dbType: "committees",
+        member_id: legJson.bioguide_id
+    }
+    }).success(function (data) {
+        $scope.legComs = data.results;
+    });
+};
 $(document).ready(function () {
    /*Menu-toggle*/
     $("#menu-toggle").click(function(e) {
         e.preventDefault();
+        if(!$('#main-navbar').hasClass("hide")) {
+            $('#page-content').css("padding-top", "0");
+        } else {
+            $('#page-content').css("padding-top", "50px");
+        }
         $("#main-navbar").toggleClass("hide");
         $('#page-content').toggleClass("col-sm-10");
         $('#page-content').toggleClass("col-sm-12");
@@ -194,6 +276,7 @@ $(document).ready(function () {
         $('#page-content').toggleClass("col-lg-12");
         $('#page-content').toggleClass("col-xs-3");
         $('#page-content').toggleClass("col-xs-9");
+        
     });
     
     $("#myCarousel").carousel({
