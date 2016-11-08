@@ -6,7 +6,7 @@ app.run(function($rootScope) {
 });
 
 app.controller("legDataCtrl", ['$scope', '$http', 'filterFilter', '$rootScope', function ($scope, $http, filterFilter, $rootScope) {
-
+    
     $http({
         method: 'GET',
         url: 'congress.php',
@@ -48,8 +48,13 @@ app.controller("legDataCtrl", ['$scope', '$http', 'filterFilter', '$rootScope', 
     $scope.viewLegislatorDetails = function (legJson) {
         viewLegDetails(legJson, $scope, $http)
     };
-    $scope.favoriteLegs = function(legJson){
+    $scope.star = '#ffffff';
+    $scope.favoriteLegs = function(legJson, favbutton){
         
+        var elem = favbutton.target;
+        //$(elem.id).removeClass('fa-star-o');
+        //$(elem.id).addClass('fa-star');
+        $scope.star = 'yellow';
         var curFavLegs = JSON.parse(localStorage.getItem("favLegs"));
         var exists = false;
         if(curFavLegs == null) {
@@ -106,11 +111,12 @@ app.controller("billDataCtrl", ['$scope', '$http', 'filterFilter', '$sce', '$roo
         $scope.newBills = data.results;
         $scope.totalItems += data.results.length;
     });
-    
+    $scope.star = '#ffffff';
     $scope.favoriteBill = function(billJson){
         
         var curFavBills = JSON.parse(localStorage.getItem("favBills"));
         var exists = false;
+        $scope.star = 'yellow';
         if(curFavBills == null) {
             curFavBills = [];
             curFavBills.push(billJson);
@@ -158,10 +164,12 @@ app.controller("comDataCtrl", ['$scope', '$http', 'filterFilter', '$rootScope', 
         });
         return sorted;
     }
+    $scope.star = '#ffffff';
     $scope.favoriteCommittee = function(comJson){
         
         var curFavComs = JSON.parse(localStorage.getItem("favComs"));
         var exists = false;
+        $scope.star = 'yellow';
         if(curFavComs == null) {
             curFavComs = [];
             curFavComs.push(comJson);

@@ -12,10 +12,8 @@
     #sidebar, #page-content {
         padding-top: 50px;
     }
-    #favBillIcon, #favLegIcon {
-        padding:5px 10px 5px 10px;
-        border: 1px solid grey; 
-        vertical-align:bottom;
+    a.selected #favBillIcon, a.selected #favLegIcon {
+        color: yellow;
     }
     @media screen and (max-width: 768px) {
         #menu-toggle {
@@ -55,9 +53,10 @@
         .navbar-header {
             padding-right: 0;
         }
-       
+       .panel-body {
+            overflow: auto;
+        }
     }
-    
     .table-bordered > thead > tr > th,
     .table-bordered > tbody > tr > th,
     .table-bordered > tfoot > tr > th,
@@ -79,5 +78,9 @@
     }
     
     .fav-color {
-        color: yellow;
+        content: "\f006";
+        color:yellow;
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: orange;
+    margin-left: -5px;
     }
