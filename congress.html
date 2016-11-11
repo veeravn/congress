@@ -7,7 +7,6 @@
     <title>Congress Information Search</title>
     <link rel="shortcut icon" href="http://sunlightfoundation.com/favicon.ico" />
     <link rel="stylesheet" href="css/bootstrap.min.css">
-<!--    <link rel="stylesheet" href="css/navbar-fixed-side.css">-->
     <link href="http://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
 
@@ -687,7 +686,8 @@
                                                     <tr dir-paginate="com in coms | filter:{chamber: 'senate'} | filter:senateComSearch | itemsPerPage: pageSize" current-page="currentPage" pagination-id='senateCommittees'>
                                                         <td>
                                                             <button ng-click="favoriteCommittee(com, $event)">
-                                                                <i ng-class="checkFavCom(com.committee_id)?'fa fa-star fa-3x fav':'fa fa-star fa-3x unfav'" aria-hidden="true" id="{{com.committee_id}}" ></i>
+                                                                <i ng-class="checkFavCom(com.committee_id)" aria-hidden="true" id="{{com.committee_id}}" >
+                                                                </i>
                                                             </button>
                                                         </td>
                                                         <td style='width: 15%; '>
@@ -734,7 +734,8 @@
                                                     <tr dir-paginate="com in coms | filter:{chamber: 'joint'} | filter:jointComSearch | itemsPerPage: pageSize" current-page="currentPage" pagination-id='jointCommittees'>
                                                         <td>
                                                             <button ng-click="favoriteCommittee(com, $event)">
-                                                                <i ng-class="checkFavCom(com.committee_id)?'fa fa-star fa-3x fav':'fa fa-star fa-3x unfav'" aria-hidden="true" id="{{com.committee_id}}" ></i>
+                                                                <i ng-class="checkFavCom(com.committee_id)" aria-hidden="true" id="{{com.committee_id}}" >
+                                                                </i>
                                                             </button>
                                                         </td>
                                                         <td>

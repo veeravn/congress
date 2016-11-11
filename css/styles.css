@@ -205,3 +205,6 @@
         margin-bottom: 0;
         border: 1px solid #dddddd;
     }
+.hideData {
+    display:none;
+}

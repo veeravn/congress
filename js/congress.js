@@ -308,7 +308,9 @@ app.controller("comDataCtrl", ['$scope', '$http', 'filterFilter', '$rootScope', 
                 }
             }
         });
-        
+        if( returnVal == '') {
+            returnVal= 'fa fa-star fa-3x unfav';
+        }
         return returnVal;
     };
     
