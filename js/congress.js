@@ -1,12 +1,73 @@
-var app = angular.module('congress', ['angularUtils.directives.dirPagination', 'ui.bootstrap', 'angular.filter']);
+var app = angular.module('congress', ['angularUtils.directives.dirPagination', 'ui.bootstrap']);
 app.run(function($rootScope) {
     $rootScope.favoriteLegislators = JSON.parse(localStorage.getItem("favLegs"));
     $rootScope.favBill = JSON.parse(localStorage.getItem("favBills"));
     $rootScope.favoriteCommittees = JSON.parse(localStorage.getItem("favComs"));
+    
 });
 
 app.controller("legDataCtrl", ['$scope', '$http', 'filterFilter', '$rootScope', function ($scope, $http, filterFilter, $rootScope) {
-    
+    $scope.usStates = [
+    { name: 'ALABAMA', abbreviation: 'AL'},
+    { name: 'ALASKA', abbreviation: 'AK'},
+    { name: 'AMERICAN SAMOA', abbreviation: 'AS'},
+    { name: 'ARIZONA', abbreviation: 'AZ'},
+    { name: 'ARKANSAS', abbreviation: 'AR'},
+    { name: 'CALIFORNIA', abbreviation: 'CA'},
+    { name: 'COLORADO', abbreviation: 'CO'},
+    { name: 'CONNECTICUT', abbreviation: 'CT'},
+    { name: 'DELAWARE', abbreviation: 'DE'},
+    { name: 'DISTRICT OF COLUMBIA', abbreviation: 'DC'},
+    { name: 'FEDERATED STATES OF MICRONESIA', abbreviation: 'FM'},
+    { name: 'FLORIDA', abbreviation: 'FL'},
+    { name: 'GEORGIA', abbreviation: 'GA'},
+    { name: 'GUAM', abbreviation: 'GU'},
+    { name: 'HAWAII', abbreviation: 'HI'},
+    { name: 'IDAHO', abbreviation: 'ID'},
+    { name: 'ILLINOIS', abbreviation: 'IL'},
+    { name: 'INDIANA', abbreviation: 'IN'},
+    { name: 'IOWA', abbreviation: 'IA'},
+    { name: 'KANSAS', abbreviation: 'KS'},
+    { name: 'KENTUCKY', abbreviation: 'KY'},
+    { name: 'LOUISIANA', abbreviation: 'LA'},
+    { name: 'MAINE', abbreviation: 'ME'},
+    { name: 'MARSHALL ISLANDS', abbreviation: 'MH'},
+    { name: 'MARYLAND', abbreviation: 'MD'},
+    { name: 'MASSACHUSETTS', abbreviation: 'MA'},
+    { name: 'MICHIGAN', abbreviation: 'MI'},
+    { name: 'MINNESOTA', abbreviation: 'MN'},
+    { name: 'MISSISSIPPI', abbreviation: 'MS'},
+    { name: 'MISSOURI', abbreviation: 'MO'},
+    { name: 'MONTANA', abbreviation: 'MT'},
+    { name: 'NEBRASKA', abbreviation: 'NE'},
+    { name: 'NEVADA', abbreviation: 'NV'},
+    { name: 'NEW HAMPSHIRE', abbreviation: 'NH'},
+    { name: 'NEW JERSEY', abbreviation: 'NJ'},
+    { name: 'NEW MEXICO', abbreviation: 'NM'},
+    { name: 'NEW YORK', abbreviation: 'NY'},
+    { name: 'NORTH CAROLINA', abbreviation: 'NC'},
+    { name: 'NORTH DAKOTA', abbreviation: 'ND'},
+    { name: 'NORTHERN MARIANA ISLANDS', abbreviation: 'MP'},
+    { name: 'OHIO', abbreviation: 'OH'},
+    { name: 'OKLAHOMA', abbreviation: 'OK'},
+    { name: 'OREGON', abbreviation: 'OR'},
+    { name: 'PALAU', abbreviation: 'PW'},
+    { name: 'PENNSYLVANIA', abbreviation: 'PA'},
+    { name: 'PUERTO RICO', abbreviation: 'PR'},
+    { name: 'RHODE ISLAND', abbreviation: 'RI'},
+    { name: 'SOUTH CAROLINA', abbreviation: 'SC'},
+    { name: 'SOUTH DAKOTA', abbreviation: 'SD'},
+    { name: 'TENNESSEE', abbreviation: 'TN'},
+    { name: 'TEXAS', abbreviation: 'TX'},
+    { name: 'UTAH', abbreviation: 'UT'},
+    { name: 'VERMONT', abbreviation: 'VT'},
+    { name: 'VIRGIN ISLANDS', abbreviation: 'VI'},
+    { name: 'VIRGINIA', abbreviation: 'VA'},
+    { name: 'WASHINGTON', abbreviation: 'WA'},
+    { name: 'WEST VIRGINIA', abbreviation: 'WV'},
+    { name: 'WISCONSIN', abbreviation: 'WI'},
+    { name: 'WYOMING', abbreviation: 'WY' }
+];
     $http({
         method: 'GET',
         url: 'congress.php',
@@ -18,12 +79,11 @@ app.controller("legDataCtrl", ['$scope', '$http', 'filterFilter', '$rootScope', 
         $scope.state = data.results;
         $scope.house = data.results;
         $scope.senate = data.results;
-        $scope.stateNames = data.results;
         
         $scope.currentPage = 1;
         $scope.pageSize = 10;
         $scope.maxSize = 5;
-        $scope.totalItems = data.results.length;
+        $scope.totalItems = data.results.count;
     });
     $scope.filterState = function (term) {
         if(angular.isUndefined(term) || term == null) {
@@ -31,7 +91,7 @@ app.controller("legDataCtrl", ['$scope', '$http', 'filterFilter', '$rootScope', 
             
         } 
         var obj = {
-            state_name: term.state_name
+            state_name: term.name
         };
 
         $scope.state = filterFilter($scope.legData, obj);
@@ -46,32 +106,50 @@ app.controller("legDataCtrl", ['$scope', '$http', 'filterFilter', '$rootScope', 
     };
     
     $scope.viewLegislatorDetails = function (legJson) {
+        
+        $scope.star = checkFavorite('legislators', legJson.bioguide_id)
         viewLegDetails(legJson, $scope, $http)
     };
-    $scope.star = '#ffffff';
+    
     $scope.favoriteLegs = function(legJson, favbutton){
-        
+
         var elem = favbutton.target;
-        //$(elem.id).removeClass('fa-star-o');
-        //$(elem.id).addClass('fa-star');
-        $scope.star = 'yellow';
-        var curFavLegs = JSON.parse(localStorage.getItem("favLegs"));
+        console.log(elem.id);
         var exists = false;
+        var curFavLegs = JSON.parse(localStorage.getItem("favLegs"));
+        
         if(curFavLegs == null) {
             curFavLegs = [];
+            $scope[legJson.bioguide_id] = true;
             curFavLegs.push(legJson);
         } else {
-            angular.forEach(curFavLegs, function(value, key) {
-                if(value.bioguide_id == legJson.bioguide_id) {
-                    exists = true;  
+            if(!$scope[legJson.bioguide_id]) {
+                
+                $scope[legJson.bioguide_id] = true;
+                angular.forEach(curFavLegs, function(value, key) {
+                    if(value.bioguide_id == legJson.bioguide_id) {
+                        exists = true;  
+                    }
+                });
+                if(!exists) {
+                    curFavLegs.push(legJson);
                 }
-            });
-            if(!exists) {
-                curFavLegs.push(legJson);
+            } else {
+                
+                $scope[legJson.bioguide_id] = false;
+                removeFavLeg(legJson);
+                $rootScope.favoriteLegislators = JSON.parse(localStorage.getItem("favLegs"));
+                $scope.star = checkFavorite('legislators', legJson.bioguide_id);
+                return;
             }
         }
+        
+        
         localStorage.setItem("favLegs", JSON.stringify(curFavLegs));
         $rootScope.favoriteLegislators = JSON.parse(localStorage.getItem("favLegs"));
+        $scope.star = checkFavorite('legislators', legJson.bioguide_id);
+        
+        
     };
     
     
@@ -84,6 +162,25 @@ app.controller("legDataCtrl", ['$scope', '$http', 'filterFilter', '$rootScope', 
         return input.slice(start);
     };
 });
+function removeFavLeg (legislatorJson) {
+    var curFavLegs = JSON.parse(localStorage.getItem("favLegs"));
+    var index = -1;
+    var exists = false;
+    angular.forEach(curFavLegs, function(value, key) {
+        
+        if(!exists) {
+            index++;
+            if(value.bioguide_id == legislatorJson.bioguide_id) {
+                exists = true;
+            }
+        }
+    });
+    if(index >= 0) {
+        curFavLegs.splice(index,1);  
+    }
+    localStorage.setItem("favLegs", JSON.stringify(curFavLegs));
+    
+}
 app.controller("billDataCtrl", ['$scope', '$http', 'filterFilter', '$sce', '$rootScope', function ($scope, $http, filterFilter, $sce, $rootScope) { 
     $scope.currentPage = 1;
     $scope.pageSize = 10;
@@ -98,7 +195,7 @@ app.controller("billDataCtrl", ['$scope', '$http', 'filterFilter', '$sce', '$roo
         }
     }).success(function (data) {
         $scope.activeBills = data.results;
-        $scope.totalItems += data.results.length;
+        $scope.totalItems += data.results.count;
     });
     $http({
         method: 'GET',
@@ -109,38 +206,72 @@ app.controller("billDataCtrl", ['$scope', '$http', 'filterFilter', '$sce', '$roo
         }
     }).success(function (data) {
         $scope.newBills = data.results;
-        $scope.totalItems += data.results.length;
+        $scope.totalItems += data.results.count;
     });
-    $scope.star = '#ffffff';
-    $scope.favoriteBill = function(billJson){
+    $scope.favoriteBill = function(billJson, favbutton){
+        console.log(favbutton.target.id);
+        
+        var elem = favbutton.target;
         
         var curFavBills = JSON.parse(localStorage.getItem("favBills"));
         var exists = false;
-        $scope.star = 'yellow';
+        
         if(curFavBills == null) {
             curFavBills = [];
+            $scope[billJson.bill_id] = true;
             curFavBills.push(billJson);
         } else {
-            angular.forEach(curFavBills, function(value, key) {
-                if(value.bill_id == billJson.bill_id) {
-                    exists = true;  
+            if(!$scope[billJson.bill_id]) {
+                $scope[billJson.bill_id] = true;
+                angular.forEach(curFavBills, function(value, key) {
+                    if(value.bill_id == billJson.bill_id) {
+                        exists = true;  
+                    }
+                });
+                if(!exists) {
+                    curFavBills.push(billJson);
                 }
-            });
-            if(!exists) {
-                curFavBills.push(billJson);
+            } else {
+                
+                $scope[billJson.bill_id] = false;
+                removeFavBill(billJson);
+                $rootScope.favBill = JSON.parse(localStorage.getItem("favBills"));
+                $scope.star = checkFavorite('bills', billJson.bill_id);
+                return;
             }
         }
         localStorage.setItem("favBills", JSON.stringify(curFavBills));
         $rootScope.favBill = JSON.parse(localStorage.getItem("favBills"));
+        $scope.star = checkFavorite('bills', billJson.bill_id);
     };
     $scope.viewBillDetails = function (billJson) {
         $scope.billDetails = billJson;
+        $scope.star = checkFavorite('bills', billJson.bill_id)
         $scope.pdf = $sce.trustAsResourceUrl(billJson.last_version.urls.pdf);
     };
     
 }]);
-
-app.controller("comDataCtrl", ['$scope', '$http', 'filterFilter', '$rootScope', function ($scope, $http, filterFilter, $rootScope) {    
+function removeFavBill (billJson) {
+    var curFavBills = JSON.parse(localStorage.getItem("favBills"));
+    var index = -1;
+    var exists = false;
+    angular.forEach(curFavBills, function(value, key) {
+        
+        if(!exists) {
+            index++;
+            if(value.bill_id == billJson.bill_id) {
+                exists = true;
+            }
+        }
+    });
+    if(index >= 0) {
+        curFavBills.splice(index,1);  
+    }
+    localStorage.setItem("favBills", JSON.stringify(curFavBills));
+    
+}
+app.controller("comDataCtrl", ['$scope', '$http', 'filterFilter', '$rootScope', function ($scope, $http, filterFilter, $rootScope) { 
+    $scope.star = "";
     $http({
         method: 'GET',
         url: 'congress.php',
@@ -150,12 +281,10 @@ app.controller("comDataCtrl", ['$scope', '$http', 'filterFilter', '$rootScope', 
     }).success(function (data) {
         $scope.coms = data.results;
         $scope.committees = $scope.orderBy(data.results, 'committee_id');
-        
-        
         $scope.currentPage = 1;
         $scope.pageSize = 10;
         $scope.maxSize = 5;
-        $scope.totalItems = data.results.length;
+        $scope.totalItems = data.results.count;
     });
     $scope.orderBy = function(array, key) {
         var sorted = array.sort(function(a, b) {
@@ -164,30 +293,79 @@ app.controller("comDataCtrl", ['$scope', '$http', 'filterFilter', '$rootScope', 
         });
         return sorted;
     }
-    $scope.star = '#ffffff';
-    $scope.favoriteCommittee = function(comJson){
+    $scope.checkFavCom = function(id) {
+        var f = JSON.parse(localStorage.getItem('favComs'));
+        returnVal = "";
+        exists = false;
+        $.each(f, function(index, value) {
+            if(!exists) {
+                if(value.committee_id == id) {
+                    returnVal= 'fa fa-star fa-3x fav';
+                    exists = true;
+                }
+                else{
+                    returnVal= 'fa fa-star fa-3x unfav';
+                }
+            }
+        });
         
+        return returnVal;
+    };
+    
+    
+    $scope.favoriteCommittee = function(comJson, favbutton){
+        console.log(favbutton.target.id);
         var curFavComs = JSON.parse(localStorage.getItem("favComs"));
+        
+        var elem = favbutton.target;
         var exists = false;
-        $scope.star = 'yellow';
         if(curFavComs == null) {
             curFavComs = [];
+            $scope[comJson.committee_id] = true;
             curFavComs.push(comJson);
         } else {
-            
-            angular.forEach(curFavComs, function(value, key) {
-                if(value.committee_id == comJson.committee_id) {
-                    exists = true;  
+            if(!$scope[comJson.committee_id]) {
+                
+                $scope[comJson.committee_id] = true;
+                angular.forEach(curFavComs, function(value, key) {
+                    if(value.committee_id == comJson.committee_id) {
+                        exists = true;  
+                    }
+                });
+                if(!exists) {
+                    curFavComs.push(comJson);
                 }
-            });
-            if(!exists) {
-                curFavComs.push(comJson);
+            } else {
+                $scope[comJson.committee_id] = false;
+                removeFavCom(comJson);
+                $rootScope.favoriteCommittees = JSON.parse(localStorage.getItem("favComs"));
+                $scope.checkFavCom(comJson.committee_id);
+                return;
             }
         }
         localStorage.setItem("favComs", JSON.stringify(curFavComs));
         $rootScope.favoriteCommittees = JSON.parse(localStorage.getItem("favComs"));
+        $scope.checkFavCom(comJson.committee_id);
     };
 }]);
+function removeFavCom (comJson) {
+    var curFavComs = JSON.parse(localStorage.getItem("favComs"));
+    var index = -1;
+    var exists = false;
+    angular.forEach(curFavComs, function(value, key) {
+        if(!exists) {
+            index++;
+            if(value.committee_id == comJson.committee_id) {
+                exists = true;
+            }
+        }
+    });
+    if(index >= 0) {
+        curFavComs.splice(index,1);  
+    }
+    localStorage.setItem("favComs", JSON.stringify(curFavComs));
+    
+}
 app.controller("favDataCtrl", ['$scope', 'filterFilter', '$rootScope', '$http', '$sce', function ($scope, filterFilter, $rootScope, $http, $sce) {    
   
     $scope.currentPage = 1;
@@ -196,7 +374,23 @@ app.controller("favDataCtrl", ['$scope', 'filterFilter', '$rootScope', '$http', 
     $scope.favoriteBills = $rootScope.favBill;
     $scope.favoriteComs = $rootScope.favoriteCommittees;
     $scope.favoriteLegs = $rootScope.favoriteLegislators;
-    
+    $scope.star = "fav";
+    $scope.removeFavorite = function(dbType, item) {
+        var index = 0;
+        if('Legislators' == dbType) {
+            removeFavLeg(item);
+            $rootScope.favoriteLegislators = JSON.parse(localStorage.getItem('favLegs'));
+            $scope.star = checkFavorite('legislators', item.bioguide_id);
+        } else if('Bills' == dbType) {
+            removeFavBill(item);
+            $rootScope.favBill = JSON.parse(localStorage.getItem('favBills'));
+            $scope.star = checkFavorite('bills', item.bill_id);
+        } else if('Committees' == dbType) {
+            removeFavCom(item);
+            $rootScope.favoriteCommittees = JSON.parse(localStorage.getItem('favComs'));
+            $scope.star = checkFavorite('committees', item.committee_id);
+        }
+    };
     $scope.$watch("favoriteLegislators", function() {
         $scope.favoriteLegs = $rootScope.favoriteLegislators;
     });
@@ -206,22 +400,7 @@ app.controller("favDataCtrl", ['$scope', 'filterFilter', '$rootScope', '$http', 
     $scope.$watch("favoriteCommittees", function() {
         $scope.favoriteComs = $rootScope.favoriteCommittees;
     });
-    $scope.removeFavorite = function(dbType, item) {
-        var index = 0;
-        if('Legislators' == dbType) {
-            index =$scope.favoriteLegs.indexOf(item)
-            $scope.favoriteLegs.splice(index,1);  
-            localStorage.setItem("favLegs", JSON.stringify($scope.favoriteLegs));
-        } else if('Bills' == dbType) {
-            index=$scope.favoriteBills.indexOf(item)
-            $scope.favoriteBills.splice(index,1); 
-            localStorage.setItem("favBills", JSON.stringify($scope.favoriteBills));
-        } else if('Committees' == dbType) {
-            index=$scope.favoriteComs.indexOf(item)
-            $scope.favoriteComs.splice(index,1);  
-            localStorage.setItem("favComs", JSON.stringify($scope.favoriteComs));
-        }
-    };
+    
     $scope.viewBillDetails = function (billJson) {
         $scope.billDetails = billJson;
         $scope.pdf = $sce.trustAsResourceUrl(billJson.last_version.urls.pdf);
@@ -236,6 +415,31 @@ app.filter('capitalize', function () {
         return (!!input) ? input.charAt(0).toUpperCase() + input.substr(1) : '';
     }
 });
+function checkFavorite(dbType, id) {
+    var star = '';
+    var favLegs = JSON.parse(localStorage.getItem('favLegs'));
+    var favBills = JSON.parse(localStorage.getItem('favBills'));
+    if(dbType == 'legislators') {
+        angular.forEach(favLegs, function(value, key) {
+            if(value.bioguide_id == id) {
+                star = 'fav';
+            }
+        });
+
+    } else if(dbType == 'bills') {
+        angular.forEach(favBills, function(value, key) {
+            if(value.bill_id == id) {
+                star = 'fav';
+            }
+        });
+    } else {
+        star = 'unfav';            
+    }
+    if(star == '') {
+        star = 'unfav';
+    }
+    return  star;
+};
 function getTermCompletePercentage(startDate, endDate) {
     var start = new Date(startDate), 
     end = new Date(endDate), 
@@ -272,21 +476,22 @@ $(document).ready(function () {
    /*Menu-toggle*/
     $("#menu-toggle").click(function(e) {
         e.preventDefault();
-        if(!$('#main-navbar').hasClass("hide")) {
-            $('#page-content').css("padding-top", "0");
-        } else {
-            $('#page-content').css("padding-top", "50px");
+        if($(window).width()>= 768) {
+            if(!$('.side-bar').hasClass("hide")) {
+                $('.content').css("padding-left", "0");
+            } else {
+                $('.content').css("padding-left", "200px");
+            }
         }
-        $("#main-navbar").toggleClass("hide");
-        $('#page-content').toggleClass("col-sm-10");
-        $('#page-content').toggleClass("col-sm-12");
-        $('#page-content').toggleClass("col-lg-10");
-        $('#page-content').toggleClass("col-lg-12");
-        $('#page-content').toggleClass("col-xs-3");
-        $('#page-content').toggleClass("col-xs-9");
-        
+        if($(window).width()< 768) {
+            if(!$('.side-bar').hasClass("hide")) {
+                $('.content').css("padding-left", "0");
+            } else {
+                $('.content').css("padding-left", "60px");
+            }
+        }
+        $(".side-bar").toggleClass("hide");
     });
-    
     $("#myCarousel").carousel({
         interval: false
     });

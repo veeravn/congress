@@ -7,72 +7,57 @@
     <title>Congress Information Search</title>
     <link rel="shortcut icon" href="http://sunlightfoundation.com/favicon.ico" />
     <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/navbar-fixed-side.css">
+<!--    <link rel="stylesheet" href="css/navbar-fixed-side.css">-->
     <link href="http://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
 
 </head>
 
-<body ng-app="congress">
+<body ng-app="congress" style="height:100%;">
     <div class="container-fluid" id="wrapper">
         <div class="row">
             <nav id="topHeader" class="navbar navbar-default navbar-fixed-top" data-offset-top="150">
                 <div class="text-center" id="headerText">
-                    <ul class="nav navbar-nav">
-                        <li>
-                            <button id="menu-toggle" style="vertical-align: middle;">
-                                <i class="fa fa-bars fa-2x "></i>
-                            </button>
-                        </li>
-                    </ul>
-
+                    
+                    <button id="menu-toggle" clas=".push_menu">
+                        <i class="fa fa-bars fa-2x "></i>
+                    </button>
                     <a id="sunlighthome" target="_blank" href="https://sunlightfoundation.com/api/"><img src="http://cs-server.usc.edu:45678/hw/hw8/images/logo.png" style="display:inline-block;">
-                        <h2 id="title">Congress API</h2></a>
+                        <h2 id="title">Congress API</h2>
+                    </a>
                 </div>
             </nav>
-            <div class="col-sm-2 col-lg-2 col-xs-3 " id="sidebar">
-                <nav id="main-navbar" class="navbar navbar-inverse navbar-fixed-side ">
-                    <div class="container">
-<!--
-                        <div class="navbar-header">
-                            <button class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse" style="float:right;">
-                                <span class="sr-only">Toggle navigation</span>
-                                <span class="icon-bar"></span>
-                                <span class="icon-bar"></span>
-                                <span class="icon-bar"></span>
-                            </button>
-                        </div>
--->
-                        <div class="">
-                            <ul class="nav navbar-nav">
-                                <li class="active">
-                                    <a href="#" onclick="legislatorTab();">
-                                        <i class="fa fa-user"></i>&nbsp;&nbsp;Legislators
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" onclick="billsTab();">
-                                        <i class="fa fa-file-o"></i>&nbsp;&nbsp;Bills
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" onclick="committeeTab();">
-                                        <i class="fa fa-sign-in"></i>&nbsp;&nbsp;Committees
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" onclick="favoritesTab();">
-                                        <i class="fa fa-star"></i>&nbsp;&nbsp;Favorites
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
+            <div class="side-bar">
+               
+                <ul>
+                    <li class="menu-head">
+                        <a href="#" onclick="legislatorTab();">
+                            <i class="fa fa-user"></i><span class="navtabs">&nbsp;&nbsp;Legislators</span>
+                        </a>
+                    </li>
+                    <div class="menu ">
+                        <li>
+                            <a href="#" onclick="billsTab();">
+                                <i class="fa fa-file-o"></i><span class="navtabs">&nbsp;&nbsp;Bills</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" onclick="committeeTab();">
+                                <i class="fa fa-sign-in"></i><span class="navtabs">&nbsp;&nbsp;Committees</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" onclick="favoritesTab();">
+                                <i class="fa fa-star"></i><span class="navtabs">&nbsp;&nbsp;Favorites</span>
+                            </a>
+                        </li>
                     </div>
-                </nav>
-            </div>
-            <!-- Page content -->
-            <div class="container-fluid">
-                <div class="col-sm-10 col-lg-10 col-xs-9" id="page-content">
+                    
+                </ul>
+    	    </div>   
+            <div class="content">
+            <div class="container-fluid" id="content-wrapper">
+                <div class="col-sm-12 col-lg-12 col-xs-12" id="page-content">
                     <div id="legContent" class="" ng-controller="legDataCtrl">
                         <div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval=false>
                             <div class="carousel-inner">
@@ -81,7 +66,7 @@
                                     <hr>
                                     <div class="panel">
                                         <div class="panel-body">
-                                            <ul class="nav nav-tabs">
+                                            <ul class="nav nav-tabs" id="legTabs">
                                                 <li class="active"><a href="#1" data-toggle="tab" id="stateSearch">By State</a></li>
                                                 <li><a href="#houseLeg" data-toggle="tab" id="senateSearch">House</a></li>
                                                 <li><a href="#senateLeg" data-toggle="tab" id="houseSearch">Senate</a></li>
@@ -94,7 +79,7 @@
                                                                 <tr style="background-color:#f2f2f2; margin-left:15px;">
                                                                     <th colspan="5" style="vertical-align:middle; padding-left:15px;" >Legislators By State</th>
                                                                     <th>
-                                                                        <select id="stateFilter" class="form-control" ng-model="stateFilter" data-col="0" ng-options="state.state_name for state in stateNames | orderBy: 'state_name' | unique: 'state_name' track by state.state_name" ng-change="filterState(stateFilter)">
+                                                                        <select id="stateFilter" class="form-control" ng-model="stateFilter" data-col="0" ng-options="state.name for state in usStates | orderBy: 'name'" ng-change="filterState(stateFilter)">
                                                                             <option value="">All States</option>
                                                                         </select>
                                                                     </th>
@@ -264,7 +249,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!--end carousel item 1-->
+                                <!--end carousel item 1 ng-style="star"-->
                                 <div class="item" id="legislatorDetails">
                                     <h1>Legislators</h1>
                                     <hr style='margin:0;'>
@@ -274,7 +259,7 @@
                                             </button>
                                             <h3 style="display: inline-block;">Details</h3>
                                             <button ng-click="favoriteLegs(legDetails, $event)" style="float:right;">
-                                                <i class="fa fa-star fa-3x" aria-hidden="true" ng-attr-id="{{legDetails.bioguide_id}}" ng-style="{'color':star, 'opacity':'1'}"></i>&nbsp;&nbsp;
+                                                <i class="fa fa-star fa-3x {{star}}" aria-hidden="true" id="{{legDetails.bioguide_id}}" ></i>&nbsp;&nbsp;
                                             </button>
                                             <hr>
                                         <div class="panel-body" style='padding:0;'>
@@ -515,8 +500,11 @@
                                                                     <td>{{bill.bill_type | uppercase}}</td>
                                                                     <td style="width:30%;">{{bill.official_title}}</td>
 
-                                                                    <td>
+                                                                    <td ng-if="bill.chamber=='house'">
                                                                         <img src='http://cs-server.usc.edu:45678/hw/hw8/images/h.png' style='width: 43px; height:37px; display: inline-block;'>&nbsp&nbsp{{bill.chamber | capitalize}}
+                                                                    </td>
+                                                                    <td ng-if="bill.chamber=='senate'">
+                                                                        <img src='http://cs-server.usc.edu:45678/hw/hw8/images/s.svg' style='width: 43px; height:37px; display: inline-block;'>&nbsp&nbsp{{bill.chamber | capitalize}}
                                                                     </td>
                                                                     <td>{{bill.introduced_on}}</td>
                                                                     <td>{{bill.sponsor.title}}. {{bill.sponsor.last_name}}, {{bill.sponsor.first_name}}</td>
@@ -544,8 +532,8 @@
                                         <span class="glyphicon glyphicon-chevron-left"></span>
                                     </button>
                                     <h3 style="display: inline-block;">Details</h3>
-                                    <button ng-click="favoriteBill(billDetails)" style="float:right;">
-                                       <i class="fa fa-star fa-3x" aria-hidden="true" ng-attr-id="{{billDetails.bill_id}}" ng-style="{'color':star, 'opacity':'1'}"></i>&nbsp;&nbsp;
+                                    <button ng-click="favoriteBill(billDetails, $event)" style="float:right;">
+                                       <i class="fa fa-star fa-3x {{star}}" aria-hidden="true" id="{{billDetails.bill_id}}"></i>&nbsp;&nbsp;
                                     </button>
                                     <div class="panel">
                                         <div id="billDetails" class="col-xs-6">
@@ -639,14 +627,15 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr dir-paginate="com in coms | filter:{chamber: 'house'} | filter:houseComSearch | itemsPerPage: pageSize" current-page="currentPage" pagination-id='houseCommittees'>
+                                                    <tr dir-paginate="com in coms | filter:{chamber: 'house'} | filter:houseComSearch | itemsPerPage: pageSize" current-page="currentPage" pagination-id='houseCommittees' ng-init="star = checkFavorite('committees', commitee_id)">
                                                         <td>
-                                                            <button ng-click="favoriteCommittee(com)">
-                                                                <i class="fa fa-star fa-3x" aria-hidden="true" ng-attr-id="{{com.committee_id}}" ng-style="{'color':star, 'opacity':'1'}"></i>
+                                                            <button ng-click="favoriteCommittee(com, $event)">
+                                                                <i ng-class="checkFavCom(com.committee_id)" aria-hidden="true" id="{{com.committee_id}}" >
+                                                                </i>
                                                             </button>
                                                         </td>
                                                         <td style='width: 15%; '>
-                                                            <img src='http://cs-server.usc.edu:45678/hw/hw8/images/h.png' style='width: 43px; height:37px; display: inline-block;'>&nbsp&nbsp{{com.chamber | capitalize}}
+                                                            &nbsp<img src='http://cs-server.usc.edu:45678/hw/hw8/images/h.png' style='width: 43px; height:37px; display: inline-block;'>&nbsp&nbsp{{com.chamber | capitalize}}
                                                         </td>
                                                         <td>{{com.committee_id}}</td>
                                                         <td>{{com.name}}</td>
@@ -697,8 +686,8 @@
                                                 <tbody>
                                                     <tr dir-paginate="com in coms | filter:{chamber: 'senate'} | filter:senateComSearch | itemsPerPage: pageSize" current-page="currentPage" pagination-id='senateCommittees'>
                                                         <td>
-                                                            <button ng-click="favoriteCommittee(com)">
-                                                                <i class="fa fa-star fa-3x" aria-hidden="true" ng-attr-id="{{com.committee_id}}" ng-style="{'color':star, 'opacity':'1'}"></i>
+                                                            <button ng-click="favoriteCommittee(com, $event)">
+                                                                <i ng-class="checkFavCom(com.committee_id)?'fa fa-star fa-3x fav':'fa fa-star fa-3x unfav'" aria-hidden="true" id="{{com.committee_id}}" ></i>
                                                             </button>
                                                         </td>
                                                         <td style='width: 15%; '>
@@ -744,8 +733,8 @@
                                                 <tbody style="width: 100%">
                                                     <tr dir-paginate="com in coms | filter:{chamber: 'joint'} | filter:jointComSearch | itemsPerPage: pageSize" current-page="currentPage" pagination-id='jointCommittees'>
                                                         <td>
-                                                            <button ng-click="favoriteCommittee(com)">
-                                                                <i class="fa fa-star fa-3x" aria-hidden="true" ng-attr-id="{{com.committee_id}}" ng-style="{'color':star, 'opacity':'1'}"></i>
+                                                            <button ng-click="favoriteCommittee(com, $event)">
+                                                                <i ng-class="checkFavCom(com.committee_id)?'fa fa-star fa-3x fav':'fa fa-star fa-3x unfav'" aria-hidden="true" id="{{com.committee_id}}" ></i>
                                                             </button>
                                                         </td>
                                                         <td>
@@ -807,7 +796,7 @@
                                                                 <tr dir-paginate="leg in favoriteLegs | itemsPerPage: pageSize" current-page="currentPage" pagination-id='favLeg'>
                                                                     <td>
                                                                         <a href="#" ng-click="removeFavorite('Legislators', leg)">
-                                                                            <i class="fa fa-trash-o fa-3x"></i>
+                                                                            <i class="fa fa-trash-o"></i>
                                                                         </a>
                                                                     </td>
                                                                     <td>
@@ -859,7 +848,7 @@
                                                             </thead>
                                                             <tbody style="width: 100%">
                                                                 <tr dir-paginate="bill in favoriteBills | itemsPerPage: pageSize" current-page="currentPage" pagination-id='favLeg'>
-                                                                    <td><a href="#" ng-click="removeFavorite('Bills', bill)"><i class="fa fa-trash-o fa-3x" aria-hidden="true"></i></a></td>
+                                                                    <td><a href="#" ng-click="removeFavorite('Bills', bill)"><i class="fa fa-trash-o " aria-hidden="true"></i></a></td>
                                                                     <td>{{bill.bill_id}}</td>
                                                                     <td>{{bill.bill_type | uppercase}}</td>
                                                                     <td>{{bill.official_title}}</td>
@@ -900,7 +889,7 @@
                                                             </thead>
                                                             <tbody style="width: 100%">
                                                                 <tr dir-paginate="com in favoriteComs | itemsPerPage: pageSize" current-page="currentPage" pagination-id='favCom'>
-                                                                    <td><a href="#" ng-click="removeFavorite('Committees', bill)"><i class="fa fa-trash-o fa-3x" aria-hidden="true"></i></a></td>
+                                                                    <td><a href="#" ng-click="removeFavorite('Committees', com)"><i class="fa fa-trash-o" aria-hidden="true"></i></a></td>
                                                                     <td ng-if="com.chamber == 'house' ">
                                                                         <img src='http://cs-server.usc.edu:45678/hw/hw8/images/h.png' style='width: 43px; height:37px; display: inline-block;'>&nbsp&nbsp{{com.chamber | capitalize}}
                                                                     </td>
@@ -940,8 +929,8 @@
                                                 <span class="glyphicon glyphicon-chevron-left"></span>
                                             </button>
                                             <h3 style="display: inline-block;">Details</h3>
-                                            <button ng-attr-id="{{legDetails.bill_id}}" ng-click="favoriteLegs(legDetails, this)" style="float:right;">
-                                                <i class="fa fa-star fa-3x" aria-hidden="true" ng-attr-id="{{legDetails.bioguide_id}}" ng-style="{'color':star, 'opacity':'1'}"></i>&nbsp;&nbsp;
+                                            <button ng-click="removeFavorite('Legislators', legDetails)" style="float:right;">
+                                                <i class="fa fa-star fa-3x {{star}}" aria-hidden="true" id="{{legDetails.bioguide_id}}" ></i>&nbsp;&nbsp;
                                             </button>
                                             <hr>
                                         <div class="panel-body" style='padding:0;'>
@@ -1091,8 +1080,8 @@
                                         <span class="glyphicon glyphicon-chevron-left"></span>
                                     </button>
                                     <h3 style="display: inline-block;">Details</h3>
-                                    <button ng-click="favoriteBill(billDetails)" style="float:right;">
-                                       <i class="fa fa-star fa-3x" aria-hidden="true" ng-attr-id="{{billDetails.bill_id}}" ng-style="{'color':star, 'opacity':'1'}"></i>&nbsp;&nbsp;
+                                    <button ng-click="removeFavorite('Bills', billDetails)" style="float:right;">
+                                        <i class="fa fa-star fa-3x {{star}}" aria-hidden="true" id="{{billDetails.bill_id}}" ></i>&nbsp;&nbsp;
                                     </button>
                                     <div class="panel">
                                         <div id="billDetails" class="col-xs-6">
@@ -1153,6 +1142,9 @@
                     </div>
                     <!-- end favorite content -->
                 </div>
+            </div>
+            <!-- Page content -->
+            
                 <!-- end page content -->
             </div>
         </div>
@@ -1163,7 +1155,6 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <script src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-2.2.0.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-filter/0.5.11/angular-filter.min.js"></script>
         <script src="js/congress.js"></script>
     
 </body>

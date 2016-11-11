@@ -3,27 +3,159 @@
         display: inline-block;
         vertical-align: top;
     }
-
+    
     #title {
         display: inline-block;
         vertical-align: top;
         margin: 0;
     }
-    #sidebar, #page-content {
+    
+    #sidebar,
+    #page-content {
         padding-top: 50px;
     }
-    a.selected #favBillIcon, a.selected #favLegIcon {
+    
+    a.selected #favBillIcon,
+    a.selected #favLegIcon {
         color: yellow;
     }
+    
+    #legTabs .nav-tabs > li.active > a,
+    .nav-tabs > li.active > a:focus,
+    .nav-tabs > li.active > a:hover {
+/*        border: 1px solid #363636;*/
+        background-color: white;
+    }
+    
+    .side-bar {
+        background: #4d4d4d;
+        position: absolute;
+        height: 100%;
+        width: 200px;
+        color: #fff;
+        transition: margin-left 0.5s;
+        padding-top: 50px;
+    }
+    
+    .container {
+        width: 800px;
+        overflow: hidden;
+        display: inline-block;
+    }
+    
+    .side-bar ul {
+        list-style: none;
+        padding: 0px;
+    }
+    
+    .side-bar ul li.menu-head {
+        font-family: 'Lato', sans-serif;
+        padding: 20px;
+        padding-left: 45px;
+    }
+    
+    .side-bar ul li.menu-head a {
+        color: #fff;
+        text-decoration: none;
+        height: 50px;
+    }
+    
+    .side-bar ul .menu-head a {
+        color: #fff;
+        text-decoration: none;
+        height: 50px;
+    }
+    .side-bar ul .menu {
+        padding-left:45px
+    }
+    .side-bar ul .menu li a {
+        color: #fff;
+        text-decoration: none;
+        display: inline-table;
+        width: 100%;
+        padding-right: 20px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+    
+    .side-bar ul .menu li a.active {
+        padding-left: 17px;
+        background: #D9853B;
+        border-left: 3px solid #ECECEA;
+    }
+    
+    .side-bar ul .menu li a.active:before {
+        content: "";
+        position: absolute;
+        width: 0;
+        height: 0;
+        border-top: 20px solid transparent;
+        border-bottom: 20px solid transparent;
+        border-left: 7px solid #D9853B;
+        margin-top: -10px;
+        margin-left: 180px;
+    }
+    
+    .content {
+        padding-left: 200px;
+        transition: padding-left 0.5s;
+    }
+    
+    .active > .side-bar {
+        margin-left: -150px;
+        transition: margin-left 0.5s;
+    }
+    
+    .active > .content {
+        padding-left: 50px;
+        transition: padding-left 0.5s;
+    }
+    
+    #menu-toggle {
+        vertical-align: bottom;
+        float: left;
+        border: none;
+        background-color: inherit;
+    }
+    
+    .fav {
+        color: #ff0;
+    }
+    
+    .unfav {
+        color: #fff;
+    }
+    
     @media screen and (max-width: 768px) {
+        #content-wrapper {
+            padding-top: 50px;
+        }
+        .side-bar {
+            background: #4d4d4d;
+            position: absolute;
+            height: 100%;
+            width: 60px;
+            color: #fff;
+            transition: margin-left 0.5s;
+            padding-top: 50px;
+        }
+        .content {
+            padding-left: 60px;
+        }
+        .side-bar ul li.menu-head {
+            padding-left: 22px;   
+        }
+        .side-bar ul .menu {
+            padding-left: 22px;   
+        }
         #menu-toggle {
+            display: ;
+        }
+        .navtabs {
             display: none;
         }
         #topHeader {
-            border:0;
-        }
-        .navbar-fixed-side {
-            width: 100%;
+            border: 0;
         }
         #legislatorTableBody {
             visibility: visible;
@@ -33,7 +165,6 @@
             display: inline-block;
             vertical-align: top;
         }
-
         #title {
             display: inline-block;
             vertical-align: top;
@@ -41,22 +172,20 @@
         }
         #sidebar {
             padding-top: 54px;
-            padding-right:0;
-            width: 100%;
+            padding-right: 0;
+            width: 5%;
         }
         #page-content {
             padding-top: 0px;
         }
-        #main-navbar {
-            margin-right:0;
-        }
         .navbar-header {
             padding-right: 0;
         }
-       .panel-body {
+        .panel-body {
             overflow: auto;
         }
     }
+    
     .table-bordered > thead > tr > th,
     .table-bordered > tbody > tr > th,
     .table-bordered > tfoot > tr > th,
@@ -75,12 +204,4 @@
     .nav-tabs {
         margin-bottom: 0;
         border: 1px solid #dddddd;
-    }
-    
-    .fav-color {
-        content: "\f006";
-        color:yellow;
-    -webkit-text-stroke-width: 1px;
-    -webkit-text-stroke-color: orange;
-    margin-left: -5px;
     }
