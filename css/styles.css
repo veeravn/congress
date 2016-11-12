@@ -233,3 +233,6 @@
 #picture {
     display: table-cell;
 }
+.glyphicon-trash:hover {
+    color:red;
+}

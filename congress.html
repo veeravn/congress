@@ -387,7 +387,7 @@
                                                         <tbody>
 
                                                             <tr style='width:100%' ng-repeat="bill in legBills | limitTo:5">
-                                                                <td>{{bill.bill_id}}</td>
+                                                                <td>{{bill.bill_id | uppercase}}</td>
                                                                 <td class="hideData">{{bill.official_title}}</td>
                                                                 <td class="hideData">{{bill.chamber | capitalize}}</td>
                                                                 <td class="hideData">{{bill.bill_type | uppercase}}</td>
@@ -444,7 +444,7 @@
                                                                 </thead>
                                                                 <tbody>
                                                                     <tr dir-paginate="bill in activeBills | filter:activeBillSearch | orderBy: 'bill_id' | itemsPerPage: pageSize" current-page="currentPage" pagination-id='activeBills'>
-                                                                        <td style="padding-left:15px;">{{bill.bill_id}}</td>
+                                                                        <td style="padding-left:15px;">{{bill.bill_id | uppercase}}</td>
                                                                         <td>{{bill.bill_type | uppercase}}</td>
                                                                         <td style="width:30%;">{{bill.official_title}}</td>
                                                                         <td ng-if="bill.chamber=='house'">
@@ -492,7 +492,7 @@
                                                                 </thead>
                                                                 <tbody>
                                                                     <tr dir-paginate="bill in newBills | filter:newBillSearch | orderBy: 'bill_id' | itemsPerPage: pageSize" current-page="currentPage" pagination-id='newBills'>
-                                                                        <td style="padding-left:15px;">{{bill.bill_id}}</td>
+                                                                        <td style="padding-left:15px;">{{bill.bill_id | uppercase}}</td>
                                                                         <td>{{bill.bill_type | uppercase}}</td>
                                                                         <td style="width:30%;">{{bill.official_title}}</td>
 
@@ -537,7 +537,7 @@
                                                     <tbody style='width:100%'>
                                                         <tr>
                                                             <td>Bill ID</td>
-                                                            <td>{{billDetails.bill_id}}</td>
+                                                            <td>{{billDetails.bill_id | uppercase}}</td>
                                                         </tr>
                                                         <tr>
                                                             <td>Bill Title</td>
@@ -794,9 +794,9 @@
                                                                 <tbody style="width: 100%">
                                                                     <tr dir-paginate="leg in favoriteLegs | itemsPerPage: pageSize" current-page="currentPage" pagination-id='favLeg'>
                                                                         <td>
-                                                                            <a href="#" ng-click="removeFavorite('Legislators', leg)">
-                                                                                <i class="fa fa-trash-o"></i>
-                                                                            </a>
+                                                                            <button type="button" class="btn btn-default btn-sm" ng-click="removeFavorite('Legislators', leg)">
+                                                                                <span class="glyphicon glyphicon-trash"></span>
+                                                                            </button>
                                                                         </td>
                                                                         <td>
                                                                             <img ng-src="https://theunitedstates.io/images/congress/original/{{leg.bioguide_id}}.jpg" style="width:43px; height:50px;" />
@@ -847,8 +847,12 @@
                                                                 </thead>
                                                                 <tbody style="width: 100%">
                                                                     <tr dir-paginate="bill in favoriteBills | itemsPerPage: pageSize" current-page="currentPage" pagination-id='favLeg'>
-                                                                        <td><a href="#" ng-click="removeFavorite('Bills', bill)"><i class="fa fa-trash-o " aria-hidden="true"></i></a></td>
-                                                                        <td>{{bill.bill_id}}</td>
+                                                                        <td>
+                                                                            <button type="button" class="btn btn-default btn-sm" ng-click="removeFavorite('Bills', bill)">
+                                                                                <span class="glyphicon glyphicon-trash"></span>
+                                                                            </button>
+                                                                        </td>
+                                                                        <td>{{bill.bill_id | uppercase}}</td>
                                                                         <td>{{bill.bill_type | uppercase}}</td>
                                                                         <td>{{bill.official_title}}</td>
                                                                         <td ng-if="bill.chamber == 'house' ">
@@ -888,7 +892,11 @@
                                                                 </thead>
                                                                 <tbody style="width: 100%">
                                                                     <tr dir-paginate="com in favoriteComs | itemsPerPage: pageSize" current-page="currentPage" pagination-id='favCom'>
-                                                                        <td><a href="#" ng-click="removeFavorite('Committees', com)"><i class="fa fa-trash-o" aria-hidden="true"></i></a></td>
+                                                                        <td>
+                                                                            <button type="button" class="btn btn-default btn-sm" ng-click="removeFavorite('Committees', com)">
+                                                                                <span class="glyphicon glyphicon-trash"></span>
+                                                                            </button>
+                                                                        </td>
                                                                         <td ng-if="com.chamber == 'house' ">
                                                                             <img src='http://cs-server.usc.edu:45678/hw/hw8/images/h.png' style='width: 43px; height:37px; display: inline-block;'>&nbsp&nbsp{{com.chamber | capitalize}}
                                                                         </td>
@@ -1085,7 +1093,7 @@
                                                     <tbody style='width:100%'>
                                                         <tr>
                                                             <td>Bill ID</td>
-                                                            <td>{{billDetails.bill_id}}</td>
+                                                            <td>{{billDetails.bill_id | uppercase}}</td>
                                                         </tr>
                                                         <tr>
                                                             <td>Bill Title</td>
