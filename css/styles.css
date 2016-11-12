@@ -123,7 +123,7 @@
     }
     
     .unfav {
-        color: #fff;
+        color: #000;
     }
     
     @media screen and (max-width: 768px) {
@@ -184,6 +184,19 @@
         .panel-body {
             overflow: auto;
         }
+        .hideData {
+            display:none;
+        }
+        #personalDetails { 
+            display: block;
+        }
+        .table > .table-row > .table-cell {
+            text-align: center;
+        }
+        #personalDetails {
+            display:inherit;
+            border-top: 1px solid #ddd;
+        }
     }
     
     .table-bordered > thead > tr > th,
@@ -205,6 +218,18 @@
         margin-bottom: 0;
         border: 1px solid #dddddd;
     }
-.hideData {
-    display:none;
+.table > .table-row > .table-cell {
+    padding: 8px;
+    line-height: 1.42857143;
+    vertical-align: top;
+    border-top: 0;
+    display: table-cell;
+
+}
+.table > .table-row {
+    display: inherit;
+    border-top: 1px solid #ddd;
+}
+#picture {
+    display: table-cell;
 }

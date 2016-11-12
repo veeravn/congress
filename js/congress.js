@@ -304,12 +304,12 @@ app.controller("comDataCtrl", ['$scope', '$http', 'filterFilter', '$rootScope', 
                     exists = true;
                 }
                 else{
-                    returnVal= 'fa fa-star fa-3x unfav';
+                    returnVal= 'fa fa-star-o fa-3x unfav';
                 }
             }
         });
         if( returnVal == '') {
-            returnVal= 'fa fa-star fa-3x unfav';
+            returnVal= 'fa fa-star-o fa-3x unfav';
         }
         return returnVal;
     };
@@ -424,21 +424,21 @@ function checkFavorite(dbType, id) {
     if(dbType == 'legislators') {
         angular.forEach(favLegs, function(value, key) {
             if(value.bioguide_id == id) {
-                star = 'fav';
+                star = 'fa fa-star fa-3x fav';
             }
         });
 
     } else if(dbType == 'bills') {
         angular.forEach(favBills, function(value, key) {
             if(value.bill_id == id) {
-                star = 'fav';
+                star = 'fa fa-star fa-3x fav';
             }
         });
     } else {
-        star = 'unfav';            
+        star = 'fa fa-star-o fa-3x unfav';            
     }
     if(star == '') {
-        star = 'unfav';
+        star = 'fa fa-star-o fa-3x unfav';
     }
     return  star;
 };
