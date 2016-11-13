@@ -486,7 +486,7 @@ $(document).ready(function () {
                 $('.content').css("padding-left", "200px");
             }
         }
-        if($(window).width()< 768) {
+        if($(window).width()< 1000) {
             if(!$('.side-bar').hasClass("hide")) {
                 $('.content').css("padding-left", "0");
             } else {

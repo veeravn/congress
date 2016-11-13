@@ -73,7 +73,7 @@
                                                 <div class="tab-content ">
                                                     <div class="tab-pane active" id="1">
                                                         <div class="panel-body">
-                                                            <table class="table-responsive table-hover table-bordered" id="legislatorTable" ng-cloak>
+                                                            <table class="table table-hover table-bordered" id="legislatorTable" ng-cloak>
                                                                 <thead class="thead-inverse">
                                                                     <tr style="background-color:#f2f2f2; margin-left:15px;">
                                                                         <th colspan="5" style="vertical-align:middle; padding-left:15px;">Legislators By State</th>
@@ -100,7 +100,9 @@
                                                                         <td ng-if="leg.party == 'D' " style='width: 15%; padding-left:15px;'>
                                                                             <img src='http://cs-server.usc.edu:45678/hw/hw8/images/d.png' style='width: 43px; height:37px; display: block;'>
                                                                         </td>
-                                                                        <td ng-if="leg.party == 'I' " style='width: 15%; padding-left:15px;'></td>
+                                                                        <td ng-if="leg.party == 'I' " style='width: 15%; padding-left:15px;'>
+                                                                            <img src='http://independentamericanparty.org/wp-content/themes/v/images/logo-american-heritage-academy.png' style='width: 43px; height:37px; display: block;'>
+                                                                        </td>
                                                                         <td style='width: 20%; ' data-order="asc">
                                                                             {{leg.last_name}}, {{leg.first_name}}
                                                                         </td>
@@ -136,7 +138,7 @@
                                                     <!-- end tab pane 1 -->
                                                     <div class="tab-pane" id="houseLeg">
                                                         <div class="panel-body">
-                                                            <table class="table-responsive table-hover table-bordered" id="houseTable" style="width:100%">
+                                                            <table class="table table-hover table-bordered" id="houseTable" style="width:100%">
                                                                 <thead class="thead-inverse">
                                                                     <tr style="background-color:#f2f2f2;padding-left:15px;">
                                                                         <th colspan="4" style="vertical-align:middle; padding-left:15px;">Legislators By House</th>
@@ -164,7 +166,9 @@
                                                                         <td ng-if="leg.party == 'D' " style='width: 15%; padding-left:15px;'>
                                                                             <img src='http://cs-server.usc.edu:45678/hw/hw8/images/d.png' style='width: 43px; height:37px; display: block;'>
                                                                         </td>
-                                                                        <td ng-if="leg.party == 'I' " style='width: 15%; padding-left:15px;'></td>
+                                                                        <td ng-if="leg.party == 'I' " style='width: 15%; padding-left:15px;'>
+                                                                            <img src='http://independentamericanparty.org/wp-content/themes/v/images/logo-american-heritage-academy.png' style='width: 43px; height:37px; display: block;'>
+                                                                        </td>
                                                                         <td style='width: 20%; ' data-order="asc">
                                                                             {{leg.last_name}}, {{leg.first_name}}
                                                                         </td>
@@ -195,7 +199,7 @@
                                                     <!--end tab pane 2 -->
                                                     <div class="tab-pane" id="senateLeg">
                                                         <div class="panel-body">
-                                                            <table class="table-responsive table-hover table-bordered" id="legislatorTable" style="width:100%">
+                                                            <table class="table table-hover table-bordered" id="legislatorTable" style="width:100%">
                                                                 <thead class="thead-inverse">
                                                                     <tr style="background-color:#f2f2f2;">
                                                                         <th colspan="3" style="vertical-align:middle; padding-left:15px;">Legislators By Senate</th>
@@ -221,7 +225,7 @@
                                                                         <td ng-if="leg.party == 'D' " style="padding-left:15px;">
                                                                             <img src='http://cs-server.usc.edu:45678/hw/hw8/images/d.png' style='width: 43px; height:37px; display: block;'>
                                                                         </td>
-                                                                        <td ng-if="leg.party == 'I' " style="padding-left:15px;"></td>
+                                                                        <td ng-if="leg.party == 'I' " style="padding-left:15px;"><img src='http://independentamericanparty.org/wp-content/themes/v/images/logo-american-heritage-academy.png' style='width: 43px; height:37px; display: block;'></td>
 
                                                                         <td data-order="asc">
                                                                             {{leg.last_name}}, {{leg.first_name}}
@@ -257,7 +261,7 @@
                                                 <span class="glyphicon glyphicon-chevron-left"></span>
                                             </button>
                                             <h3 style="display: inline-block;">Details</h3>
-                                            <button ng-click="favoriteLegs(legDetails, $event)" style="float:right;">
+                                            <button type="button" class="btn btn-default" ng-click="favoriteLegs(legDetails, $event)" style="float:right;">
                                                 <i class="{{star}}" aria-hidden="true" id="{{legDetails.bioguide_id}}"></i>&nbsp;&nbsp;
                                             </button>
                                             <hr>
@@ -300,6 +304,9 @@
                                                                         </div>
                                                                         <div class="table-cell" ng-if="legDetails.party == 'D' " style=''>
                                                                             <img src='http://cs-server.usc.edu:45678/hw/hw8/images/d.png' style='width: 43px; height:37px; display: inline-block;'> Democrat
+                                                                        </div>
+                                                                        <div class="table-cell" ng-if="legDetails.party == 'I' " style=''>
+                                                                            <img src='http://independentamericanparty.org/wp-content/themes/v/images/logo-american-heritage-academy.png' style='width: 43px; height:37px; display: inline-block;'> Democrat
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -354,7 +361,7 @@
                                                     </div>
                                                 </div>
 
-                                                <div id="legCommittees" class="col-xs-6 table-responsive">
+                                                <div id="legCommittees" class="col-xs-6 table">
                                                     <table class='table' id='legComTable' style=''>
                                                         <thead>
                                                             <tr>
@@ -372,7 +379,7 @@
                                                         </tbody>
                                                     </table>
                                                 </div>
-                                                <div id="legBills" class="col-xs-6 table-responsive">
+                                                <div id="legBills" class="col-xs-6 table">
                                                     <table class='table' id='legBillTable' style=''>
                                                         <thead>
                                                             <tr>
@@ -422,7 +429,7 @@
                                                 <div class="tab-content ">
                                                     <div class="tab-pane active" id="activeBill">
                                                         <div class="panel-body">
-                                                            <table class="table-responsive table-hover table-bordered" id="activeBillsTable" style="width:100%">
+                                                            <table class="table table-hover table-bordered" id="activeBillsTable" style="width:100%">
                                                                 <thead class="thead-inverse">
                                                                     <tr style="background-color:#f2f2f2;">
                                                                         <th colspan="6" style="vertical-align:middle; padding-left:15px;">Active Bills</th>
@@ -446,7 +453,7 @@
                                                                     <tr dir-paginate="bill in activeBills | filter:activeBillSearch | orderBy: ['-introduced_on', 'bill_id'] | itemsPerPage: pageSize" current-page="currentPage" pagination-id='activeBills'>
                                                                         <td style="padding-left:15px;">{{bill.bill_id | uppercase}}</td>
                                                                         <td>{{bill.bill_type | uppercase}}</td>
-                                                                        <td style="width:30%;">{{bill.official_title}}</td>
+                                                                        <td style="width:30%;" class="hideData">{{bill.official_title}}</td>
                                                                         <td ng-if="bill.chamber=='house'">
                                                                             <img src='http://cs-server.usc.edu:45678/hw/hw8/images/h.png' style='width: 43px; height:37px; display: inline-block;'>&nbsp&nbsp{{bill.chamber | capitalize}}
                                                                         </td>
@@ -470,7 +477,7 @@
                                                     </div>
                                                     <div class="tab-pane" id="new">
                                                         <div class="panel-body">
-                                                            <table class="table-responsive table-hover table-bordered" id="newBillsTable" style="width:100%">
+                                                            <table class="table table-hover table-bordered" id="newBillsTable" style="width:100%">
                                                                 <thead class="thead-inverse">
                                                                     <tr style="background-color:#f2f2f2;">
                                                                         <th colspan="6" style="vertical-align:middle;padding-left:15px;">New Bills</th>
@@ -494,7 +501,7 @@
                                                                     <tr dir-paginate="bill in newBills | filter:newBillSearch | orderBy: ['-introduced_on', 'bill_id'] | itemsPerPage: pageSize" current-page="currentPage" pagination-id='newBills'>
                                                                         <td style="padding-left:15px;">{{bill.bill_id | uppercase}}</td>
                                                                         <td>{{bill.bill_type | uppercase}}</td>
-                                                                        <td style="width:30%;">{{bill.official_title}}</td>
+                                                                        <td style="width:30%;" class="hideData">{{bill.official_title}}</td>
 
                                                                         <td ng-if="bill.chamber=='house'">
                                                                             <img src='http://cs-server.usc.edu:45678/hw/hw8/images/h.png' style='width: 43px; height:37px; display: inline-block;'>&nbsp&nbsp{{bill.chamber | capitalize}}
@@ -528,7 +535,7 @@
                                             <span class="glyphicon glyphicon-chevron-left"></span>
                                         </button>
                                         <h3 style="display: inline-block;">Details</h3>
-                                        <button ng-click="favoriteBill(billDetails, $event)" style="float:right;">
+                                        <button type="button" class="btn btn-default" ng-click="favoriteBill(billDetails, $event)" style="float:right;">
                                             <i class="{{star}}" aria-hidden="true" id="{{billDetails.bill_id}}"></i>&nbsp;&nbsp;
                                         </button>
                                         <div class="panel col-sm-12  col-md-12  col-lg-12">
@@ -541,7 +548,7 @@
                                                         </tr>
                                                         <tr>
                                                             <td>Bill Title</td>
-                                                            <td>{{billDetails.official_title}}</td>
+                                                            <td class="hideData">{{billDetails.official_title}}</td>
                                                         </tr>
                                                         <tr>
                                                             <td>Bill Type</td>
@@ -603,7 +610,7 @@
                                     <div class="tab-content ">
                                         <div class="tab-pane active" id="house">
                                             <div class="panel-body">
-                                                <table class="table-responsive table-hover table-bordered" id="houseComTable" style="width:100%">
+                                                <table class="table table-hover table-bordered" id="houseComTable" style="width:100%">
                                                     <thead class="thead-inverse">
                                                         <tr style="background-color:#f2f2f2;">
                                                             <th colspan="6" style="vertical-align:middle;padding-left:15px;">House</th>
@@ -626,7 +633,7 @@
                                                     <tbody>
                                                         <tr dir-paginate="com in coms | filter:{chamber: 'house'} | filter:houseComSearch | itemsPerPage: pageSize" current-page="currentPage" pagination-id='houseCommittees' ng-init="star = checkFavorite('committees', commitee_id)">
                                                             <td>
-                                                                <button ng-click="favoriteCommittee(com, $event)">
+                                                                <button type="button" class="btn btn-default" ng-click="favoriteCommittee(com, $event)">
                                                                     <i ng-class="checkFavCom(com.committee_id)" aria-hidden="true" id="{{com.committee_id}}">
                                                                 </i>
                                                                 </button>
@@ -662,7 +669,7 @@
                                         <!--end House tab -->
                                         <div class="tab-pane" id="senate">
                                             <div class="panel-body">
-                                                <table class="table-responsive table-hover table-bordered" id="senateComTable" style="width:100%">
+                                                <table class="table table-hover table-bordered" id="senateComTable" style="width:100%">
                                                     <thead class="thead-inverse">
                                                         <tr style="background-color:#f2f2f2;">
                                                             <th colspan="4" style="vertical-align:middle;padding-left:15px;">Senate</th>
@@ -683,7 +690,7 @@
                                                     <tbody>
                                                         <tr dir-paginate="com in coms | filter:{chamber: 'senate'} | filter:senateComSearch | itemsPerPage: pageSize" current-page="currentPage" pagination-id='senateCommittees'>
                                                             <td>
-                                                                <button ng-click="favoriteCommittee(com, $event)">
+                                                                <button type="button" class="btn btn-default" ng-click="favoriteCommittee(com, $event)">
                                                                     <i ng-class="checkFavCom(com.committee_id)" aria-hidden="true" id="{{com.committee_id}}">
                                                                 </i>
                                                                 </button>
@@ -711,7 +718,7 @@
                                         <!--end Senate tab -->
                                         <div class="tab-pane" id="joint">
                                             <div class="panel-body">
-                                                <table class="table-responsive table-hover table-bordered" id="jointComTable" style="width:100%">
+                                                <table class="table table-hover table-bordered" id="jointComTable" style="width:100%">
                                                     <thead class="thead-inverse">
                                                         <tr style="background-color:#f2f2f2;">
                                                             <th colspan="3" style="vertical-align:middle;padding-left:15px;">Joint</th>
@@ -731,7 +738,7 @@
                                                     <tbody style="width: 100%">
                                                         <tr dir-paginate="com in coms | filter:{chamber: 'joint'} | filter:jointComSearch | itemsPerPage: pageSize" current-page="currentPage" pagination-id='jointCommittees'>
                                                             <td>
-                                                                <button ng-click="favoriteCommittee(com, $event)">
+                                                                <button type="button" class="btn btn-default" ng-click="favoriteCommittee(com, $event)">
                                                                     <i ng-class="checkFavCom(com.committee_id)" aria-hidden="true" id="{{com.committee_id}}">
                                                                 </i>
                                                                 </button>
@@ -775,7 +782,7 @@
                                                 <div class="tab-content ">
                                                     <div class="tab-pane active" id="favLegs">
                                                         <div class="panel-body">
-                                                            <table class="table-responsive table-hover table-bordered" id="favLegTable" style="width:100%">
+                                                            <table class="table table-hover table-bordered" id="favLegTable" style="width:100%">
                                                                 <thead class="thead-inverse">
                                                                     <tr style="background-color:#f2f2f2;">
                                                                         <th colspan="8" style="vertical-align:middle;">Favorite Legilators</th>
@@ -807,6 +814,9 @@
                                                                         <td ng-if="leg.party == 'D' ">
                                                                             <img src='http://cs-server.usc.edu:45678/hw/hw8/images/d.png' style='width: 43px; height:37px; display: inline-block;'>
                                                                         </td>
+                                                                        <td ng-if="leg.party == 'I' " style="padding-left:15px;">
+                                                                            <img src='http://independentamericanparty.org/wp-content/themes/v/images/logo-american-heritage-academy.png' style='width: 43px; height:37px; display: block;'>
+                                                                        </td>
                                                                         <td>{{leg.last_name}}, {{leg.first_name}}</td>
                                                                         <td ng-if="leg.chamber == 'house' ">
                                                                             <img src='http://cs-server.usc.edu:45678/hw/hw8/images/h.png' style='width: 43px; height:37px; display: inline-block;'>&nbsp&nbsp{{leg.chamber | capitalize}}
@@ -829,7 +839,7 @@
                                                     <!--end favorite legislator carousel 1 -->
                                                     <div class="tab-pane" id="favBills">
                                                         <div class="panel-body">
-                                                            <table class="table-responsive table-hover table-bordered" id="favBillTable" style="width:100%">
+                                                            <table class="table table-hover table-bordered" id="favBillTable" style="width:100%">
                                                                 <thead class="thead-inverse">
                                                                     <tr style="background-color:#f2f2f2;">
                                                                         <th colspan="8" style="vertical-align:middle;">Favorite Legilators</th>
@@ -854,7 +864,7 @@
                                                                         </td>
                                                                         <td>{{bill.bill_id | uppercase}}</td>
                                                                         <td>{{bill.bill_type | uppercase}}</td>
-                                                                        <td>{{bill.official_title}}</td>
+                                                                        <td class="hideData">{{bill.official_title}}</td>
                                                                         <td ng-if="bill.chamber == 'house' ">
                                                                             <img src='http://cs-server.usc.edu:45678/hw/hw8/images/h.png' style='width: 43px; height:37px; display: inline-block;'>&nbsp&nbsp{{bill.chamber | capitalize}}
                                                                         </td>
@@ -876,7 +886,7 @@
                                                     <!--end favorite Bill carousel 1 -->
                                                     <div class="tab-pane" id="favComs">
                                                         <div class="panel-body">
-                                                            <table class="table-responsive table-hover table-bordered" id="favComTable" style="width:100%">
+                                                            <table class="table table-hover table-bordered" id="favComTable" style="width:100%">
                                                                 <thead class="thead-inverse">
                                                                     <tr style="background-color:#f2f2f2;">
                                                                         <th colspan="6" style="vertical-align:middle;">Favorite Committees</th>
@@ -936,7 +946,7 @@
                                                 <span class="glyphicon glyphicon-chevron-left"></span>
                                             </button>
                                             <h3 style="display: inline-block;">Details</h3>
-                                            <button ng-click="removeFavorite('Legislators', legDetails)" style="float:right;">
+                                            <button type="button" class="btn btn-default" ng-click="removeFavorite('Legislators', legDetails)" style="float:right;">
                                                 <i class="{{star}}" aria-hidden="true" id="{{legDetails.bioguide_id}}"></i>&nbsp;&nbsp;
                                             </button>
                                             <hr>
@@ -979,6 +989,9 @@
                                                                         </div>
                                                                         <div class="table-cell" ng-if="legDetails.party == 'D' " style=''>
                                                                             <img src='http://cs-server.usc.edu:45678/hw/hw8/images/d.png' style='width: 43px; height:37px; display: inline-block;'> Democrat
+                                                                        </div>
+                                                                        <div class="table-cell" ng-if="legDetails.party == 'I' " style=''>
+                                                                            <img src='http://independentamericanparty.org/wp-content/themes/v/images/logo-american-heritage-academy.png' style='width: 43px; height:37px; display: inline-block;'> Democrat
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -1033,7 +1046,7 @@
                                                     </div>
                                                 </div>
 
-                                                <div id="legCommittees" class="col-xs-6 table-responsive">
+                                                <div id="legCommittees" class="col-xs-6 table">
                                                     <table class='table' id='legComTable' style=''>
                                                         <thead>
                                                             <tr>
@@ -1051,7 +1064,7 @@
                                                         </tbody>
                                                     </table>
                                                 </div>
-                                                <div id="legBills" class="col-xs-6 table-responsive">
+                                                <div id="legBills" class="col-xs-6 table">
                                                     <table class='table' id='legBillTable' style=''>
                                                         <thead>
                                                             <tr>
@@ -1084,7 +1097,7 @@
                                             <span class="glyphicon glyphicon-chevron-left"></span>
                                         </button>
                                         <h3 style="display: inline-block;">Details</h3>
-                                        <button ng-click="removeFavorite('Bills', billDetails)" style="float:right;">
+                                        <button type="button" class="btn btn-default" ng-click="removeFavorite('Bills', billDetails)" style="float:right;">
                                             <i class="{{star}}" aria-hidden="true" id="{{billDetails.bill_id}}"></i>&nbsp;&nbsp;
                                         </button>
                                         <div class="panel col-sm-12  col-md-12  col-lg-12">
@@ -1097,7 +1110,7 @@
                                                         </tr>
                                                         <tr>
                                                             <td>Bill Title</td>
-                                                            <td>{{billDetails.official_title}}</td>
+                                                            <td class="hideData">{{billDetails.official_title}}</td>
                                                         </tr>
                                                         <tr>
                                                             <td>Bill Type</td>
@@ -1153,7 +1166,7 @@
 
                 <!-- end page content -->
             </div>
-        </div>
+        </div><!-- end row -->
     </div>
     <!--end page content wrapper-->
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
